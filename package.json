@@ -1,0 +1,16 @@
+{
+  "name": "2600-full-stack-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "nodemon ./server/server.js"
+  },
+  "author": "Mitchell, Yujie",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.17.1",
+    "mongodb": "^6.5.0",
+    "nodemon": "^3.1.0"
+  }
+}
