@@ -9,10 +9,47 @@
     Hi there!
     <!-- Please add the front-end code here -->
     <!-- The following buttons are used to test MongoDB CRUD operations -->
-    <button id="insert">Insert</button>
-    <button id="find">Find</button>
-    <button id="update">Update</button>
-    <button id="delete">Delete</button>
+    <div id="Register">
+      <h2>Register</h2>
+      <form>
+        <input type="email" name="email" placeholder="Email" required /><br />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        /><br />
+        <input
+          type="password"
+          id="confirm"
+          placeholder="Confirm Password"
+          required
+        /><br />
+        <button id="signup">Sign Up</button>
+      </form>
+    </div>
+
+    <div id="Login">
+      <h2>Login</h2>
+      <form>
+        <input type="email" name="email" placeholder="Email" required /><br />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        /><br />
+        <button id="signin">Sign In</button>
+      </form>
+    </div>
+
+    <button id="signout">Sign Out</button>
+
+    <div data-authenticated>
+      <h2>Authenticated User</h2>
+      <span></span>
+    </div>
     <script src="js/test.js"></script>
+    <script src="js/auth.js"></script>
   </body>
 </html>

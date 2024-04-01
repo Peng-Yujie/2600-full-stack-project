@@ -7,7 +7,7 @@ const { ServerApiVersion } = require("mongodb");
   let mongoClient = undefined;
 
   const getMongoClient = (local = false) => {
-    let uri = `mongodb+srv://${connection.USERNAME}:${connection.PASSWORD}@${connection.SERVER}/?retryWrites=true&w=majority&appName=${connection.DATABASE}`;
+    let uri = `mongodb+srv://${connection.USERNAME}:${connection.PASSWORD}@${connection.SERVER}/${connection.DATABASE}`;
     if (local) {
       uri = `mongodb://127.0.0.1:27017/${connection.DATABASE}`;
     }
@@ -31,6 +31,11 @@ const { ServerApiVersion } = require("mongodb");
       .catch((err) => {
         console.log("Could not find ", query, err.message);
       });
+  };
+  const findOne = async (collection, query) => {
+    return collection.findOne(query).catch((err) => {
+      console.log("Could not find ", query, err.message);
+    });
   };
   const deleteMany = async (collection, query) => {
     return collection.deleteMany(query).catch((err) => {
@@ -90,7 +95,7 @@ const { ServerApiVersion } = require("mongodb");
         // client.close();
         // console.log("\t|Connection closed");
       });
-    next();
+    if (typeof next === "function") next();
   };
   //-------------------------------------------------------------------------
   const util = {
@@ -101,6 +106,7 @@ const { ServerApiVersion } = require("mongodb");
     database: connection.DATABASE,
     getMongoClient,
     find,
+    findOne,
     deleteMany,
     deleteOne,
     insertMany,

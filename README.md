@@ -36,6 +36,33 @@ The game is a simple memory matching game where the player is presented with car
 - Database Utilization:
   - Implementation of MongoDB for data storage
 
+## Structure
+
+```
+
+2600-full-stack-project/
+├── controllers/ # Contains controller files
+│ ├── authController.js
+│ ├── homeController.js
+│ ├── memberController.js
+├── models/ # Contains model files
+│ ├── config/
+│ │ ├── config.js
+│ ├── post.js
+│ ├── util.js
+├── server/
+│ ├── config/
+│ │ ├── config.js
+│ ├── modules.js
+│ ├── server.js
+├── views/
+│ ├── css/
+│ ├── img/
+│ ├── js/
+│ ├── index.html
+
+```
+
 ## Installation
 
 1. Clone the repository
