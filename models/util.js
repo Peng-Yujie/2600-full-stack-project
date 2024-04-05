@@ -92,8 +92,8 @@ const { ServerApiVersion } = require("mongodb");
         );
       })
       .finally(() => {
-        // client.close();
-        // console.log("\t|Connection closed");
+        client.close();
+        console.log("\t|Connection closed");
       });
     if (typeof next === "function") next();
   };
