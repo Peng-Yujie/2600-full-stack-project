@@ -134,3 +134,7 @@ dist
 
 # workspace files
 2600-full-stack-project.code-workspace
+
+# Eclipse project files
+.project
+.settings/
