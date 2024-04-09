@@ -1,6 +1,5 @@
-const { ServerApiVersion } = require("mongodb");
-
 (() => {
+  const { ServerApiVersion } = require("mongodb");
   const MongoClient = require("mongodb").MongoClient;
   const connection = require("./config/config");
   //-------------------------------------------------------------------------
@@ -11,7 +10,9 @@ const { ServerApiVersion } = require("mongodb");
     if (local) {
       uri = `mongodb://127.0.0.1:27017/${connection.DATABASE}`;
     }
-    console.log(`Connection String<<${uri}`);
+    console.log(
+      `Connection String<<${uri.replace(/:([^:@]{1,})@/, ":****@")}>>`
+    );
     if (!mongoClient) {
       mongoClient = new MongoClient(uri, {
         serverApi: {
@@ -23,79 +24,99 @@ const { ServerApiVersion } = require("mongodb");
     }
     return mongoClient;
   };
+
+  // Connect to the database
+  const connectDB = async () => {
+    try {
+      if (!mongoClient) {
+        mongoClient = getMongoClient();
+        await mongoClient.connect();
+      }
+      console.log(
+        "\t|Connected successfully to MongoDB!",
+        mongoClient.s.url.replace(/:([^:@]{1,})@/, ":****@")
+      );
+    } catch (err) {
+      console.log("\t|Could not connect to MongoDB Server", err.message);
+      throw err;
+    }
+  };
+
+  // Access the database
+  const getDB = async () => {
+    try {
+      if (!mongoClient) {
+        await connectDB();
+      }
+      return mongoClient.db(connection.DATABASE);
+    } catch (err) {
+      console.log("\t|Could not access the database", err.message);
+      throw err;
+    }
+  };
+
   //-------------------------------------------------------------------------
   const find = async (collection, query) => {
     return collection
       .find(query)
       .toArray()
       .catch((err) => {
-        console.log("Could not find ", query, err.message);
+        console.log("\t|Could not find ", query, err.message);
       });
   };
   const findOne = async (collection, query) => {
     return collection.findOne(query).catch((err) => {
-      console.log("Could not find ", query, err.message);
+      console.log("\t|Could not find ", query, err.message);
     });
   };
   const deleteMany = async (collection, query) => {
     return collection.deleteMany(query).catch((err) => {
-      console.log("Could not delete many ", query, err.message);
+      console.log("\t|Could not delete many ", query, err.message);
     });
   };
   const deleteOne = async (collection, query) => {
     return collection.deleteOne(query).catch((err) => {
-      console.log("Could not delete one ", query, err.message);
+      console.log("\t|Could not delete one ", query, err.message);
     });
   };
   const insertMany = async (collection, documents) => {
     return collection
       .insertMany(documents)
-      .then((res) => console.log("Data inserted with IDs", res.insertedIds))
+      .then((res) => console.log("\t|Data inserted with IDs", res.insertedIds))
       .catch((err) => {
-        console.log("Could not add data ", err.message);
+        console.log("\t|Could not add data ", err.message);
         if (!(err.name === "BulkWriteError" && err.code === 11000)) throw err;
       });
   };
   const insertOne = async (collection, document) => {
     return await collection
       .insertOne(document)
-      .then((res) => console.log("Data inserted with ID", res.insertedId))
+      .then((res) => console.log("\t|Data inserted with ID", res.insertedId))
       .catch((err) => {
-        console.log("Could not add data ", err.message);
+        console.log("\t|Could not add data ", err.message);
         if (!(err.name === "BulkWriteError" && err.code === 11000)) throw err;
       });
   };
   //-------------------------------------------------------------------------
   const logRequest = async (req, res, next) => {
-    const client = util.getMongoClient();
-    client
-      .connect()
-      .then((connection) => {
-        console.log("\t|Inside connect()");
-        console.log(
-          "\t|Connected successfully to MongoDB!",
-          connection.s.url.replace(/:([^:@]{1,})@/, ":****@")
-        );
-        let collection = connection.db().collection("Requests");
-        let log = {
-          Timestamp: new Date(),
-          Method: req.method,
-          Path: req.url,
-          Query: req.query,
-          "Status Code": res.statusCode,
-        };
-        util.insertOne(collection, log);
-      })
-      .catch((err) => {
-        console.log(
-          `\t|Could not connect to MongoDB Server\n\t|${err.message}`
-        );
-      })
-      .finally(() => {
-        client.close();
-        console.log("\t|Connection closed");
-      });
-    if (typeof next === "function") next();
+    try {
+      // Connect to the database
+      const db = await getDB();
+      const collection = db.collection("Requests");
+      // Log the request
+      const log = {
+        Timestamp: new Date(),
+        Method: req.method,
+        Path: req.url,
+        Query: req.query,
+        "Status Code": res.statusCode,
+      };
+      await insertOne(collection, log);
+    } catch (err) {
+      console.log("\t|Could not log the request", err.message);
+    } finally {
+      if (typeof next === "function") next();
+    }
   };
   //-------------------------------------------------------------------------
   const util = {
@@ -105,6 +126,8 @@ const { ServerApiVersion } = require("mongodb");
     port: 22643,
     database: connection.DATABASE,
     getMongoClient,
+    connectDB,
+    getDB,
     find,
     findOne,
     deleteMany,

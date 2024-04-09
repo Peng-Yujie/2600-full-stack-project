@@ -32,9 +32,12 @@
         console.log(reply.error);
       } else if (reply.success) {
         console.log(reply, reply);
-        document.querySelector(
-          "[data-authenticated] > span"
-        ).innerHTML = `Welcome ${email}!`;
+        /*
+  TODO: Display welcome message in proper location
+*/
+        // document.querySelector(
+        //   "[data-authenticated] > span"
+        // ).innerHTML = `Welcome ${email}!`;
       }
     } else {
       console.log("Passwords do not match. Re-enter your password");
