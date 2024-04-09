@@ -1,74 +1,26 @@
 <!DOCTYPE html>
 <html>
-  <head id="head"></head>
 
-  <body>
-    <div class="container">
-      <nav
-        id="topNav"
-        class="navbar navbar-expand-lg navbar-dark bg-info p-2"
-      ></nav>
-      <hr class="hrs" />
-      <main id="mainBody"></main>
-      <hr class="hrs" />
-      <footer id="foot"></footer>
-    </div>
-  </body>
-  <script type="text/javascript" src="data/WebPageData.js"></script>
-  <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-  <script type="text/javascript" src="js/shared.js"></script>
-  <script
-    src="https://cdn.plot.ly/plotly-2.29.1.min.js"
-    charset="utf-8"
-  ></script>
+<head id="head"></head>
 
-  <script>
-    function makeTable(id, xSize, ySize) {
-      let out = '<table style="margin: 0 auto;" >';
-      let ix = 0;
-      let iy = 0;
-      while (iy < ySize) {
-        out += "<tr>";
-        while (ix < xSize) {
-          out +=
-            "<td><div id=" +
-            ix +
-            "-" +
-            iy +
-            ' class="bg-dark rounded" style="height:150px; width:100px;"></div></td>';
-          ix++;
-        }
-        out += "</tr>";
-        ix = 0;
-        iy++;
-      }
-      out += "</table>";
-      document.getElementById(id).innerHTML = out;
-    }
-    function makerandom(needToMatch, xSize, ySize) {
-      let cards = [...Array(xSize)].map((e) => Array(ySize).fill(0));
-      let Numberof = xSize * ySize - ((xSize * ySize) % needToMatch);
-      console.log(cards);
-      console.log(Numberof);
-      let nums = Numberof / needToMatch;
-      console.log(nums);
-      let i = 0;
-      while (i < nums + 1) {
-        let i2 = 0;
-        while (i2 < needToMatch) {
-          let x = Math.floor(Math.random() * xSize);
-          let y = Math.floor(Math.random() * ySize);
-          if (cards[x][y] != 0) {
-            continue;
-          } else {
-            cards[x][y] = i;
-            document.getElementById(x + "-" + y).innerHTML = i + 1;
-          }
-          i2++;
-        }
-        i++;
-      }
-      console.log(cards);
-    }
-  </script>
+
+<body>
+	<div class="container" back>
+
+		<nav id="topNav" class="navbar navbar-expand-lg navbar-dark bg-info p-2"></nav>
+		<hr class="hrs" />
+		<main id="mainBody"></main>
+		<hr class="hrs" />
+		<footer id="foot"></footer>
+	</div>
+</body>
+<script type="text/javascript" src="data/WebPageData.js"></script>
+<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="js/shared.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.29.1.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/cardGameLogic.js"></script>
+<script>
+	
+</script>
+
 </html>

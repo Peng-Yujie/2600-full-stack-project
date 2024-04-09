@@ -29,7 +29,7 @@ var Data =[
 				"header": "Games",
 				"class": "p-2 text-center",
 				"body": "Select a Country",
-				"footer": "<button id=\"button-DisplayUniversities\" class=\"btn btn-primary rounded m-2 type=submit\" onclick='makeTable(\"TableArea\")'>Show Universities</button> <div id=\"TableArea\" style=\"margin: auto;\"></div> "
+				"footer": "<button id=\"button-makeTable\" class=\"btn btn-primary rounded m-2 type=submit\" onclick='makeTable(\"Card-3-Card-Body\",5,4)'>Start Game</button> <div id=\"TableArea\" style=\"margin: auto;\"></div> "
 			}
 		],
 		"Dropdowns": [
@@ -44,7 +44,7 @@ var Data =[
 				"header": "Plots",
 				"class": "p-2 text-center",
 				"body": "Select a multiple Country",
-				"footer": "<button id=\"button-DisplayPlots\" class=\"btn btn-primary rounded m-2 type=submit\" onclick=\"createPloty()\">create Plots</button> <div id=\"Plotty\" style=\"width:600px;height:250px;margin: auto;\"></div>"
+				"footer": "<button id=\"button-SaveSetings\" class=\"btn btn-primary rounded m-2 type=submit\" onclick=\"createPloty()\">create Plots</button> <div id=\"Plotty\" style=\"width:600px;height:250px;margin: auto;\"></div>"
 			}
 		],
 		"Dropdowns": [
