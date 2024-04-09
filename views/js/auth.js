@@ -31,10 +31,10 @@
       if (reply.error) {
         console.log(reply.error);
       } else if (reply.success) {
-        console.log(reply, reply);
+        console.log(reply);
         /*
-  TODO: Display welcome message in proper location
-*/
+          TODO: Display welcome message in proper location
+        */
         // document.querySelector(
         //   "[data-authenticated] > span"
         // ).innerHTML = `Welcome ${email}!`;
@@ -45,16 +45,19 @@
   };
   const signin = async (e) => {
     e.preventDefault();
-    email = document.querySelector('#Login input[name="email"]').value;
+    email = document.querySelector('#Login-form input[name="email"]').value;
     console.log(email);
     let password = document.querySelector(
-      '#Login input[name="password"]'
+      '#Login-form input[name="password"]'
     ).value;
     const reply = await postData("/signin", { email, password });
     if (reply.error) {
       console.log(reply.error);
     } else if (reply.success) {
-      console.log(reply, reply);
+      console.log(reply);
+      /*
+        TODO: Display welcome message or jump to another page
+      */
       document.querySelector(
         "[data-authenticated] > span"
       ).innerHTML = `Welcome ${email}!`;
@@ -67,10 +70,8 @@
     if (reply.success) {
       console.log("inside signout");
       console.log(reply.success);
-      console.log(reply, reply);
-    } else {
-      console.log(reply);
     }
+    console.log(reply);
   };
 
   document.addEventListener("DOMContentLoaded", () => {
