@@ -42,7 +42,6 @@ The game is a simple memory matching game where the player is presented with car
 
 2600-full-stack-project/
 ├── controllers/ # Contains controller files
-│ ├── authController.js
 │ ├── homeController.js
 │ ├── memberController.js
 ├── models/ # Contains model files
