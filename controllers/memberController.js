@@ -24,6 +24,12 @@ memberController.post("/signup", util.logRequest, async (req, res) => {
       let hashed = await bcrypt.hash(password, 10);
       let newUser = user(email, hashed);
       await util.insertOne(collection, newUser);
+      // add user to authenticated users collection
+      let authUsers = db.collection("authUsers");
+      let isAuth = await util.findOne(authUsers, { email: email });
+      if (!isAuth) {
+        await util.insertOne(authUsers, { email: email });
+      }
       res.status(200).json({
         success: {
           email: email,
@@ -54,6 +60,12 @@ memberController.post("/signin", util.logRequest, async (req, res) => {
     } else {
       let match = await bcrypt.compare(password, user.hashedPassword);
       if (match) {
+        // add user to authenticated users collection
+        let authUsers = db.collection("authUsers");
+        let isAuth = await util.findOne(authUsers, { email: email });
+        if (!isAuth) {
+          await util.insertOne(authUsers, { email: email });
+        }
         res.status(200).json({
           success: {
             email: email,
@@ -77,6 +89,10 @@ memberController.post("/signin", util.logRequest, async (req, res) => {
 memberController.post("/signout", util.logRequest, async (req, res) => {
   try {
     const { email } = req.body;
+    // remove user from authenticated users collection
+    let db = await getDB();
+    let collection = db.collection("authUsers");
+    await util.deleteOne(collection, { email: email });
     res.status(200).json({ success: `${email} signed out successfully!` });
   } catch (err) {
     console.log(err);
@@ -127,6 +143,7 @@ memberController.post("/addPost", util.logRequest, async (req, res, next) => {
   res.redirect("/posts.html");
 });
 
+/*
 // This route is used to test the connection between the server and the database
 memberController.post("/test", util.logRequest, async (req, res, next) => {
   // let collection = client.db().collection("Posts");
@@ -135,5 +152,6 @@ memberController.post("/test", util.logRequest, async (req, res, next) => {
   let post = Post(req.body.topic, req.body.message, req.body.by);
   util.insertOne(collection, post);
 });
+*/
 
 module.exports = memberController;
