@@ -1,21 +1,14 @@
 var Data =[
 	{
 		"name": "Home",
-		"class":"row mb-3 justify-content-between",
+		"class":" justify-content-between",
 		"Cards": [
 			{
 				"id": "Card-1",
-				"header": "Node.JS",
-				"class": "col-md-6 p-2",
-				"body": "as an asynchronisos event-drivrn javaScript runtimenode.js is designed to build scalable networkapplications. This is in contrast to today's morecommon concurrency model, in which OS threads areemployed. thread-based networking is relativelyinefficent and very difficult to use. Futhermore usersof node.js are Free from worries of dead-locking theprocess, since there are no locks",
-				"footer": "<figcaption class=\"mt-2 mb-0 blockquote-footer\">-node.js</figcaption>"
-			},
-			{
-				"id": "Card-2",
-				"header": "Web APIs",
-				"class": "col-md-6 p-2",
-				"body": "application Programming Interfaces (APIs) areconstructs made available in programming languagesto allow developers to create complex code awaymore easily. Thay abstract more complaex code awayfrom you, providing some easier syntax to use in its placeweb APIs are typically used with JavaScript althoughthis doesn't always have to be the case",
-				"footer": "<figcaption class=\"mt-2 mb-0 blockquote-footer\">Mozilla Developer Network (MDN)</figcaption>"
+				"header": "match Cards",
+				"class": " p-2",
+				"body": "in this game you will get points for matching cards together",
+				"footer": ""
 			}
 		],
 		"Dropdowns": [
@@ -25,11 +18,34 @@ var Data =[
 		"name": "Game",
 		"Cards": [
 			{
-				"id": "Card-3",
-				"header": "Games",
+				"id": "Card-2",
+				"header": "Game<div class=\"h6\">Time: <code id=\"Timer\" class=\"highlighter-rouge\">0:00:0000</code></div>",
 				"class": "p-2 text-center",
-				"body": "Select a Country",
-				"footer": "<button id=\"button-makeTable\" class=\"btn btn-primary rounded m-2 type=submit\" onclick='makeTable(\"Card-3-Card-Body\",5,4)'>Start Game</button> <div id=\"TableArea\" style=\"margin: auto;\"></div> "
+				"body": "the Game Feald",
+				"footer": "<button id=\"button-makeTable\" class=\"btn btn-primary rounded m-2 type=submit\" onclick='makeTable(\"Card-2-Card-Body\",5,4)'>Start Game</button> <div id=\"TableArea\" style=\"margin: auto;\"></div> "
+			}
+		],
+		"Dropdowns": [
+
+		]
+	},
+		{
+		"name": "High-Score",
+		"class":"row mb-3 justify-content-between",
+		"Cards": [
+			{
+				"id": "Card-3",
+				"header": "top 10",
+				"class": "col-md-6 p-2 text-center",
+				"body": "the Game Feald",
+				"footer": ""
+			},
+				{
+				"id": "Card-4",
+				"header": "your top 10",
+				"class": "col-md-6 p-2 text-center",
+				"body": "the Game Feald",
+				"footer": ""
 			}
 		],
 		"Dropdowns": [
@@ -40,17 +56,17 @@ var Data =[
 		"name": "Setting",
 		"Cards": [
 			{
-				"id": "Card-4",
+				"id": "Card-5",
 				"header": "Plots",
 				"class": "p-2 text-center",
-				"body": "Select a multiple Country",
-				"footer": "<button id=\"button-SaveSetings\" class=\"btn btn-primary rounded m-2 type=submit\" onclick=\"createPloty()\">create Plots</button> <div id=\"Plotty\" style=\"width:600px;height:250px;margin: auto;\"></div>"
+				"body": "Select difficulty",
+				"footer": ""
 			}
 		],
 		"Dropdowns": [
 			{
 				"id": "Setting",
-				"insideID": "Card-4-Card-Body",
+				"insideID": "Card-5-Card-Body",
 				"List": ["easy", "medium", "hard", "custom"],
 				"muti": false
 			}
@@ -61,13 +77,13 @@ var Data =[
 		"class":"row mb-3 justify-content-between",
 		"Cards": [
 			{
-				"id": "Card-5",
+				"id": "Card-6",
 				"header": "Register",
 				"class": "col-md-6 p-2",
 				"body": "<div id=\"Register\"><form><input type=\"email\" name=\"email\" placeholder=\"Email\" required /><br /><input type=\"password\" name=\"password\" placeholder=\"Password\" required /><br /><input type=\"password\" id=\"confirm\" placeholder=\"Confirm Password\" required /><br /><button id=\"signup\">Sign Up</button></form></div>",
 			},
 			{
-				"id": "Card-6",
+				"id": "Card-7",
 				"header": "Create acount",
 				"class": "col-md-6 p-2",
 				"body": "<div id=\"Login\"><form><input type=\"email\" name=\"email\" placeholder=\"Email\" required /><br /><input type=\"password\" name=\"password\" placeholder=\"Password\" required /><br /> <button id=\"signin\">Sign In</button></form></div>",
