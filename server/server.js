@@ -38,6 +38,7 @@ server.use((req, res, next) => {
 */
 connectDB()
   .then(() => {
+    // Start the server
     server.listen(config.PORT, "localhost", () => {
       console.log(
         `\t|Server listening on ${config.PORT}, http://localhost:${config.PORT}`

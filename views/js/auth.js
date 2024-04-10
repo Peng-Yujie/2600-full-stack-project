@@ -49,6 +49,7 @@
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
+        "X-User-Email": email, // Add the email to the headers for server-side authentication
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
