@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const config = require("../server/config/config");
-const user = require("../models/user");
+const User = require("../models/user");
 const util = require("../models/util");
 const Post = require("../models/post");
 const { getDB } = require("../models/util"); // get access to the database
@@ -21,8 +21,14 @@ memberController.post("/signup", util.logRequest, async (req, res) => {
         .status(400)
         .json({ error: `${email} already exists. Choose a different email` });
     } else {
+      // admin registration
+      // console.log("\t|", email, password, config.ADMIN, config.ADMIN_PASSWORD);
+      let role =
+        email === config.ADMIN && password === config.ADMIN_PASSWORD
+          ? "admin"
+          : "member";
       let hashed = await bcrypt.hash(password, 10);
-      let newUser = user(email, hashed);
+      let newUser = User(email, hashed, role);
       await util.insertOne(collection, newUser);
       // add user to authenticated users collection
       let authUsers = db.collection("authUsers");
@@ -60,6 +66,17 @@ memberController.post("/signin", util.logRequest, async (req, res) => {
     } else {
       let match = await bcrypt.compare(password, user.hashedPassword);
       if (match) {
+        // check if the user is admin
+        let isAdmin = user.isAdmin;
+        if (isAdmin) {
+          res.status(200).json({
+            success: {
+              email: email,
+              message: `${email} signed in successfully as an admin.`,
+            },
+          });
+          return;
+        }
         // add user to authenticated users collection
         let authUsers = db.collection("authUsers");
         let isAuth = await util.findOne(authUsers, { email: email });
@@ -143,15 +160,21 @@ memberController.post("/addPost", util.logRequest, async (req, res, next) => {
   res.redirect("/posts.html");
 });
 
-/*
-// This route is used to test the connection between the server and the database
-memberController.post("/test", util.logRequest, async (req, res, next) => {
-  // let collection = client.db().collection("Posts");
+// Admin routes
+memberController.get("/admin", util.logRequest, async (req, res, next) => {
+  console.info("Inside admin.html");
+  const email = req.headers["X-User-Email"];
+  // check if the current user is an admin
   let db = await getDB();
-  let collection = db.collection("Posts");
-  let post = Post(req.body.topic, req.body.message, req.body.by);
-  util.insertOne(collection, post);
+  let collection = db.collection("users");
+  let user = await util.findOne(collection, { email: email });
+  // if the user is not an admin, send an error message and return
+  if (!user.isAdmin) {
+    res.status(401).json({ error: "Unauthorized access" });
+    return;
+  }
+  // otherwise, send the admin page
+  res.sendFile("admin.html", { root: config.ROOT });
 });
-*/
 
 module.exports = memberController;

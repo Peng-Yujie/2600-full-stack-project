@@ -1,7 +1,7 @@
 (() => {
-  const { ServerApiVersion } = require("mongodb");
   const MongoClient = require("mongodb").MongoClient;
   const connection = require("./config/config");
+  const Log = require("./log");
   //-------------------------------------------------------------------------
   let mongoClient = undefined;
 
@@ -14,13 +14,7 @@
       `Connection String<<${uri.replace(/:([^:@]{1,})@/, ":****@")}>>`
     );
     if (!mongoClient) {
-      mongoClient = new MongoClient(uri, {
-        serverApi: {
-          version: ServerApiVersion.v1,
-          strict: true,
-          deprecationErrors: true,
-        },
-      });
+      mongoClient = new MongoClient(uri);
     }
     return mongoClient;
   };
@@ -103,14 +97,7 @@
       // Connect to the database
       const db = await getDB();
       const collection = db.collection("Requests");
-      // Log the request
-      const log = {
-        Timestamp: new Date(),
-        Method: req.method,
-        Path: req.url,
-        Query: req.query,
-        "Status Code": res.statusCode,
-      };
+      const log = Log(req.method, req.url, req.query, res.statusCode);
       await insertOne(collection, log);
     } catch (err) {
       console.log("\t|Could not log the request", err.message);
@@ -120,11 +107,6 @@
   };
   //-------------------------------------------------------------------------
   const util = {
-    url: "localhost",
-    username: connection.USERNAME,
-    password: connection.PASSWORD,
-    port: 22643,
-    database: connection.DATABASE,
     getMongoClient,
     connectDB,
     getDB,
