@@ -73,6 +73,7 @@ var Data = [
     name: "Login",
     class: "row mb-3 justify-content-between",
     Cards: [
+            
       {
         id: "Card-6",
         header: "Register",
@@ -81,11 +82,17 @@ var Data = [
       },
       {
         id: "Card-7",
-        header: "Create acount",
+        header: "Login",
         class: "col-md-6 p-2",
         body: '<div id="Login-form"><form><input type="email" name="email" placeholder="Email" required /><br /><input type="password" name="password" placeholder="Password" required /><br /> <button id="signin">Sign In</button></form></div>',
         footer: '<button id="signout">Sign Out</button>',
       },
+      {
+        id: "Card-8",
+        header: "forms",
+        class: "p-2",
+        body: '<div id="Register"><form><input type="email" name="email" placeholder="Email" required /><br /><input type="password" name="password" placeholder="Password" required /><br /><input type="password" id="confirm" placeholder="Confirm Password" required /><br /><button id="signup">Sign Up</button></form></div>',
+      }
     ],
     Dropdowns: [],
   },
