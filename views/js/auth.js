@@ -2,6 +2,46 @@
   //----------------------------------------------------
   // Initial values
   let email = undefined;
+  // Navigation data
+  // TODO: Update the navigation object with the correct sections
+  navigation = {
+    home: { title: "Home", url: "Home", section: "Home" },
+    game: { title: "Game", url: "About", section: "About" },
+    highScore: {
+      title: "High Score",
+      url: "high-score",
+      section: "high-score",
+    },
+    admin: { title: "Admin Page", url: "Admin/Users", section: "Manage Users" },
+    record: {
+      title: "Admin Page",
+      url: "Admin/Content",
+      section: "Manage Content",
+    },
+    register: {
+      title: "Register Page",
+      url: "Account/Register",
+      section: "Register",
+    },
+    login: { title: "Login Page", url: "Account/Login", section: "Login" },
+  };
+  // Navigation utility
+  const selectNav = (id) => {
+    let i = 0;
+    while (i < Data.length) {
+      if (i == id) {
+        document.getElementById(Data[i]["name"]).hidden = false;
+        document.getElementById("button-" + Data[i]["name"]).className =
+          "btn btn-dark  hr hr-blurry m-2 type=submit";
+      } else {
+        document.getElementById(Data[i]["name"]).hidden = true;
+        document.getElementById("button-" + Data[i]["name"]).className =
+          "btn btn-primary  hr hr-blurry m-2 type=submit";
+      }
+      i++;
+    }
+    i = 0;
+  };
 
   //----------------------------------------------------
   // Utility functions
@@ -75,13 +115,14 @@
         console.log(reply.error);
       } else if (reply.success) {
         console.log(reply);
-        authorize(true);
-        /*
-          TODO: Display welcome message in proper location
-        */
+        // authorize(true);
+        // Get the state from the server and render the appropriate section
+        const state = reply.success.state;
+        displaySection(navigation[state]);
         // document.querySelector(
         //   "[data-authenticated] > span"
         // ).innerHTML = `Welcome ${email}!`;
+        //
       }
     } else {
       console.log("Passwords do not match. Re-enter your password");
@@ -99,7 +140,10 @@
       console.log(reply.error);
     } else if (reply.success) {
       console.log(reply);
-      authorize(true);
+      // authorize(true);
+      // Get the state from the server and render the appropriate section
+      const state = reply.success.state;
+      displaySection(navigation[state]);
       /*
         TODO: Display welcome message or jump to another page
       */
@@ -115,7 +159,10 @@
     if (reply.success) {
       console.log("inside signout");
       console.log(reply.success);
-      authorize(false);
+      // authorize(false);
+      // Get the state from the server and render the appropriate section
+      const state = reply.success.state;
+      displaySection(navigation[state]);
     }
     console.log(reply);
   };

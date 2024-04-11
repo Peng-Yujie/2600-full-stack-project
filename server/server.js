@@ -1,9 +1,4 @@
 /*
- Loading built-in modules
-*/
-const fs = require("fs");
-const path = require("path");
-/*
   Loading external modules
 */
 const express = require("express");
@@ -16,7 +11,6 @@ const config = require("./config/config");
 const util = require("../models/util.js");
 const homeController = require("../controllers/homeController");
 const memberController = require("../controllers/memberController");
-const { connectDB } = require("../models/util");
 
 /*
   Middleware
@@ -30,13 +24,14 @@ server.get("/logs", async (req, res, next) => {
   util.logRequest(req, res, next);
 });
 server.use((req, res, next) => {
-  res.status(404).sendFile("404.html", { root: config.ROOT });
+  res.status(404).send("404: Page not found");
 });
 
 /*
   Connect to the database
 */
-connectDB()
+util
+  .connectDB()
   .then(() => {
     // Start the server
     server.listen(config.PORT, "localhost", () => {

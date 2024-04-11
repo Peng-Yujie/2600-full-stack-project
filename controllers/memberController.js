@@ -22,7 +22,6 @@ memberController.post("/signup", util.logRequest, async (req, res) => {
         .json({ error: `${email} already exists. Choose a different email` });
     } else {
       // admin registration
-      // console.log("\t|", email, password, config.ADMIN, config.ADMIN_PASSWORD);
       let role =
         email === config.ADMIN && password === config.ADMIN_PASSWORD
           ? "admin"
@@ -40,6 +39,8 @@ memberController.post("/signup", util.logRequest, async (req, res) => {
         success: {
           email: email,
           message: `${email} was added successfuly to users.`,
+          // redirect state based on role
+          state: role === "admin" ? "admin" : "home",
         },
       });
     }
@@ -73,6 +74,8 @@ memberController.post("/signin", util.logRequest, async (req, res) => {
             success: {
               email: email,
               message: `${email} signed in successfully as an admin.`,
+              // redirect to admin page
+              state: "admin",
             },
           });
           return;
@@ -87,6 +90,8 @@ memberController.post("/signin", util.logRequest, async (req, res) => {
           success: {
             email: email,
             message: `${email} signed in successfully.`,
+            // redirect to game page
+            state: "game",
           },
         });
       } else {
@@ -110,7 +115,11 @@ memberController.post("/signout", util.logRequest, async (req, res) => {
     let db = await getDB();
     let collection = db.collection("authUsers");
     await util.deleteOne(collection, { email: email });
-    res.status(200).json({ success: `${email} signed out successfully!` });
+    res.status(200).json({
+      success: `${email} signed out successfully!`,
+      // redirect to home page
+      state: "home",
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "An error occurred: " + err.message });
@@ -157,7 +166,8 @@ memberController.post("/addPost", util.logRequest, async (req, res, next) => {
   let user = req.body.by;
   let post = Post(topic, message, user);
   util.insertOne(collection, post);
-  res.redirect("/posts.html");
+  // TODO
+  // res.redirect("/posts.html");
 });
 
 // Admin routes
@@ -173,8 +183,10 @@ memberController.get("/admin", util.logRequest, async (req, res, next) => {
     res.status(401).json({ error: "Unauthorized access" });
     return;
   }
-  // otherwise, send the admin page
-  res.sendFile("admin.html", { root: config.ROOT });
+  // route to admin page
+  res
+    .status(200)
+    .json({ success: "Welcome to the admin page", state: "admin" });
 });
 
 module.exports = memberController;
