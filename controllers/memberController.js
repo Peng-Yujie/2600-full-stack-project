@@ -5,7 +5,6 @@ const User = require("../models/user");
 const util = require("../models/util");
 const Post = require("../models/post");
 const { getDB } = require("../models/util"); // get access to the database
-const navigation = config.NAVIGATION;
 const memberController = express.Router();
 
 // User sign-up
@@ -40,7 +39,8 @@ memberController.post("/signup", util.logRequest, async (req, res) => {
         success: {
           email: email,
           message: `${email} was added successfuly to users.`,
-          state: role === "admin" ? navigation.users : navigation.home,
+          // redirect state based on role
+          state: role === "admin" ? "admin" : "home",
         },
       });
     }
@@ -74,7 +74,8 @@ memberController.post("/signin", util.logRequest, async (req, res) => {
             success: {
               email: email,
               message: `${email} signed in successfully as an admin.`,
-              state: navigation.users,
+              // redirect to admin page
+              state: "admin",
             },
           });
           return;
@@ -89,7 +90,8 @@ memberController.post("/signin", util.logRequest, async (req, res) => {
           success: {
             email: email,
             message: `${email} signed in successfully.`,
-            state: navigation.game,
+            // redirect to game page
+            state: "game",
           },
         });
       } else {
@@ -115,7 +117,8 @@ memberController.post("/signout", util.logRequest, async (req, res) => {
     await util.deleteOne(collection, { email: email });
     res.status(200).json({
       success: `${email} signed out successfully!`,
-      state: navigation.home,
+      // redirect to home page
+      state: "home",
     });
   } catch (err) {
     console.log(err);
@@ -163,7 +166,8 @@ memberController.post("/addPost", util.logRequest, async (req, res, next) => {
   let user = req.body.by;
   let post = Post(topic, message, user);
   util.insertOne(collection, post);
-  res.redirect("/posts.html");
+  // TODO
+  // res.redirect("/posts.html");
 });
 
 // Admin routes
@@ -179,8 +183,10 @@ memberController.get("/admin", util.logRequest, async (req, res, next) => {
     res.status(401).json({ error: "Unauthorized access" });
     return;
   }
-  // otherwise, send the admin page
-  res.sendFile("admin.html", { root: config.ROOT });
+  // route to admin page
+  res
+    .status(200)
+    .json({ success: "Welcome to the admin page", state: "admin" });
 });
 
 module.exports = memberController;
