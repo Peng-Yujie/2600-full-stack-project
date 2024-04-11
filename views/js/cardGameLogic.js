@@ -6,7 +6,12 @@ let AnimashonTime = 500
 var cards;
 var cardsCliked;
 let Flipt = [];
-function makeTable(id, xSize, ySize) {
+let NumberofMatches  = 0;
+let NumberofMatchesNeed  = 0;
+function makeTable(id) {
+	NumberofMatches = 0;
+	let xSize = Xvar;
+	let ySize = Yvar
 	let out = '<table style="margin: 0 auto;" >';
 	let ix = 0;
 	let iy = 0;
@@ -35,11 +40,11 @@ function StartTimer()
 function makerandom(xSize, ySize) {
 	cards = [...Array(xSize)].map((e) => Array(ySize).fill(0));
 	cardsCliked = [...Array(xSize)].map((e) => Array(ySize).fill(false))
-	let Numberof = xSize * ySize - ((xSize * ySize) % needToMatch);
-	console.log(cards);
-	console.log(Numberof);
-	let nums = Numberof / needToMatch;
-	console.log(nums);
+	NumberofMatchesNeed = xSize * ySize - ((xSize * ySize) % needToMatch);
+	//console.log(cards);
+	//console.log(NumberofMatchesNeed);
+	let nums = NumberofMatchesNeed / needToMatch;
+	//console.log(nums);
 	let i = 0;
 	while (i < nums + 1) {
 		let i2 = 0;
@@ -56,7 +61,7 @@ function makerandom(xSize, ySize) {
 		}
 		i++;
 	}
-	console.log(cards);
+	//console.log(cards);
 	StartTimer()
 }
 function clickCard(Xpos, Ypos) {
@@ -91,7 +96,10 @@ function CardFlip(Xpos, Ypos)
 var lastUpdate = Date.now();
 var myInterval = setInterval(tick, 0);
 var dt
-function thesame(obj) {
+
+
+function thesame(obj) 
+{
 	Flipt.push(obj);
 	if (Flipt.length >= needToMatch) 
 	{
@@ -100,23 +108,25 @@ function thesame(obj) {
 		let match = true;
 		
 		Flipt.forEach((card) => {
-			console.log(cards[card.X][card.Y]);
+			//console.log(cards[card.X][card.Y]);
 			if (a != cards[card.X][card.Y]) {
 				match = false;
 			}
 		});
 		if (match) {
-			console.log("same")
+			//console.log("same")
 			Flipt.forEach((card) => 
 			{
 				let temp = document.getElementById(card.X + "-" +  card.Y );
-				console.log(card)
+				//console.log(card)
 				temp.onclick=''
 				temp.className = "bg-success rounded";
+				NumberofMatches++
+				Score();
 			});
 		}
 		else {
-			console.log("test");
+			//console.log("test");
 			Flipt.forEach((card) => 
 			{
 				cardsCliked[  card.X  ][  card.Y  ]=false
@@ -126,7 +136,23 @@ function thesame(obj) {
 		Flipt = [];
 	}
 }
-function tick() {
+
+
+function Score()
+{
+	console.log(NumberofMatchesNeed  +"<="+ NumberofMatches );
+	console.log(NumberofMatchesNeed  <= NumberofMatches );
+		console.log(NumberofMatchesNeed  +"=="+ NumberofMatches );
+	console.log(NumberofMatchesNeed  <= NumberofMatches );
+	if (NumberofMatchesNeed <= NumberofMatches)
+	{
+		let out = {'name':user,"time":timeLimit,"difficulty":difficulty}
+		console.log(out);
+	}
+}
+
+function tick() 
+{
 	var now = Date.now();
 	dt = now - lastUpdate;
 	lastUpdate = now;
@@ -147,7 +173,7 @@ function tick() {
 			else if (objs[i].time > 0.5 && !objs[i].half) {
 				objs[i].side = !objs[i].side;
 				objs[i].half = true;
-				console.log(objs[i].ob.src)
+				//console.log(objs[i].ob.src)
 				if (objs[i].ob.alt == "CardBack") {
 					objs[i].ob.src = "";
 					objs[i].ob.alt = "" + cards[objs[i].X][objs[i].Y]

@@ -23,7 +23,7 @@ var Data = [
         class: "p-2 text-center",
         body: "the Game Feald",
         footer:
-          '<button id="button-makeTable" class="btn btn-primary rounded m-2 type=submit" onclick=\'makeTable("Card-2-Card-Body",5,4)\'>Start Game</button> <div id="TableArea" style="margin: auto;"></div> ',
+          '<button id="button-makeTable" class="btn btn-primary rounded m-2 type=submit" onclick=\'makeTable("Card-2-Card-Body")\'>Start Game</button> <div id="TableArea" style="margin: auto;"></div> ',
       },
     ],
     Dropdowns: [],
@@ -54,15 +54,15 @@ var Data = [
     Cards: [
       {
         id: "Card-5",
-        header: "Plots",
+        header: "Setting",
         class: "p-2 text-center",
         body: "Select difficulty",
-        footer: "",
+        footer: '<button id="button-Apply-Setting" class="btn btn-primary rounded m-2 type=submit" onclick=\'applySettings()\'>Apply Setting</button> <div id="TableArea" style="margin: auto;"></div> '
       },
     ],
     Dropdowns: [
       {
-        id: "Setting",
+        id: "difficultySetting",
         insideID: "Card-5-Card-Body",
         List: ["easy", "medium", "hard", "custom"],
         muti: false,
@@ -86,12 +86,6 @@ var Data = [
         class: "col-md-6 p-2",
         body: '<div id="Login-form"><form><input type="email" name="email" placeholder="Email" required /><br /><input type="password" name="password" placeholder="Password" required /><br /> <button id="signin">Sign In</button></form></div>',
         footer: '<button id="signout">Sign Out</button>',
-      },
-      {
-        id: "Card-8",
-        header: "forms",
-        class: "p-2",
-        body: '<div id="Register"><form><input type="email" name="email" placeholder="Email" required /><br /><input type="password" name="password" placeholder="Password" required /><br /><input type="password" id="confirm" placeholder="Confirm Password" required /><br /><button id="signup">Sign Up</button></form></div>',
       }
     ],
     Dropdowns: [],

@@ -208,10 +208,7 @@ let Html = new HtmlObjects(document.getElementById("mainBody"));
 const setStyle = (style) => {
   document.getElementById("Styles").href = "css/" + style;
 };
-const setFavoriteIcon = () => {
-  // your code goes here
-};
-const setnav = () => {};
+
 const setHeader = () => {
   var path = window.location.pathname;
   var page = path.split("/").pop();
@@ -220,13 +217,8 @@ const setHeader = () => {
 const setFooter = () => {
   Html.makeFooter("foot");
 };
-const setCopyrightYear = () => {
-  // your code goes here
-};
-const setLinkActive = () => {
-  Data[i]["name"];
-  // your code goes here
-};
+
+
 const CreatePages = (inData) => {
   let out = "";
   let i = 0;
@@ -295,7 +287,7 @@ const makeNav = (inData) => {
 };
 
 const SetData = (inData) => {
-  Data = inData;
+ 	Data = inData;
   CreatePages(inData);
   makeNav(inData);
   selectNav(0);
@@ -308,7 +300,4 @@ setFooter();
 setHeader();
 setStyle("quartz.min.css");
 SetData(Data);
-SetUniversities(UniversitiesNames);
-//getJSONData("data/WebPageData.json", SetData);
-//getJSONData("data/all-universities.json", SetUniversities);
-//getJSONData("data/ISO-3166-Countries-names.json",setNames );
+
