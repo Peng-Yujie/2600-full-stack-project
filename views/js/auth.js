@@ -26,27 +26,12 @@
   //   login: { title: "Login Page", url: "Account/Login", section: "Login" },
   // };
   // Navigation utility
-  const selectNav = (id) => {
-    let i = 0;
-    while (i < Data.length) {
-      if (i == id) {
-        document.getElementById(Data[i]["name"]).hidden = false;
-        document.getElementById("button-" + Data[i]["name"]).className =
-          "btn btn-dark  hr hr-blurry m-2 type=submit";
-      } else {
-        document.getElementById(Data[i]["name"]).hidden = true;
-        document.getElementById("button-" + Data[i]["name"]).className =
-          "btn btn-primary  hr hr-blurry m-2 type=submit";
-      }
-      i++;
-    }
-    i = 0;
-  };
+
 
   //----------------------------------------------------
   // Utility functions
-  const hide = (element) => (element.style.display = "none");
-  const show = (element) => (element.style.display = "block");
+  const hide = (element) => (element.hidden = true);
+  const show = (element) => (element.hidden = false);
   const setActivePage = (section) => {
     console.log(section);
     let menuItems = document.querySelectorAll("a[data-page]");
@@ -141,11 +126,12 @@
       console.log(reply.error);
     } else if (reply.success) {
       console.log(reply);
-      // authorize(true); // authorize the user
+      selectNav(0);
+      authorize(true); // authorize the user
       // Get the state from the server and render the appropriate section
       // const state = reply.success.state;
       // displaySection(navigation[state]);
-      selectNav(0);
+
       /*
         TODO: Display welcome message or jump to another page
       */
@@ -168,10 +154,10 @@
     }
     console.log(reply);
   };
-
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#signup").onclick = signup;
-    document.querySelector("#signout").onclick = signout;
+    document.querySelector("#button-signout").onclick = signout;
     document.querySelector("#signin").onclick = signin;
   });
+  authorize(false);
 })();

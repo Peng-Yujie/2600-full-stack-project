@@ -1,6 +1,7 @@
 var Data = [
   {
     name: "Home",
+    authenticated: 0,
     class: " justify-content-between",
     Cards: [
       {
@@ -15,6 +16,7 @@ var Data = [
   },
   {
     name: "Game",
+    authenticated: 1,
     Cards: [
       {
         id: "Card-2",
@@ -30,6 +32,7 @@ var Data = [
   },
   {
     name: "High-Score",
+    authenticated: 1,
     class: "row mb-3 justify-content-between",
     Cards: [
       {
@@ -51,6 +54,7 @@ var Data = [
   },
   {
     name: "Setting",
+    authenticated: 1,
     Cards: [
       {
         id: "Card-5",
@@ -71,6 +75,7 @@ var Data = [
   },
   {
     name: "Login",
+    authenticated: 2,
     class: "row mb-3 justify-content-between",
     Cards: [
             
@@ -85,7 +90,7 @@ var Data = [
         header: "Login",
         class: "col-md-6 p-2",
         body: '<div id="Login-form"><form><input type="email" name="email" placeholder="Email" required /><br /><input type="password" name="password" placeholder="Password" required /><br /> <button id="signin">Sign In</button></form></div>',
-        footer: '<button id="signout">Sign Out</button>',
+        footer: '',
       }
     ],
     Dropdowns: [],
