@@ -4,27 +4,27 @@
   let email = undefined;
   // Navigation data
   // TODO: Update the navigation object with the correct sections
-  navigation = {
-    home: { title: "Home", url: "Home", section: "Home" },
-    game: { title: "Game", url: "About", section: "About" },
-    highScore: {
-      title: "High Score",
-      url: "high-score",
-      section: "high-score",
-    },
-    admin: { title: "Admin Page", url: "Admin/Users", section: "Manage Users" },
-    record: {
-      title: "Admin Page",
-      url: "Admin/Content",
-      section: "Manage Content",
-    },
-    register: {
-      title: "Register Page",
-      url: "Account/Register",
-      section: "Register",
-    },
-    login: { title: "Login Page", url: "Account/Login", section: "Login" },
-  };
+  // navigation = {
+  //   home: { title: "Home", url: "Home", section: "Home" },
+  //   game: { title: "Game", url: "Game", section: "Game" },
+  //   highScore: {
+  //     title: "High Score",
+  //     url: "high-score",
+  //     section: "high-score",
+  //   },
+  //   admin: { title: "Admin Page", url: "Admin/Users", section: "Manage Users" },
+  //   record: {
+  //     title: "Admin Page",
+  //     url: "Admin/Content",
+  //     section: "Manage Content",
+  //   },
+  //   register: {
+  //     title: "Register Page",
+  //     url: "Account/Register",
+  //     section: "Register",
+  //   },
+  //   login: { title: "Login Page", url: "Account/Login", section: "Login" },
+  // };
   // Navigation utility
   const selectNav = (id) => {
     let i = 0;
@@ -118,7 +118,8 @@
         // authorize(true);
         // Get the state from the server and render the appropriate section
         const state = reply.success.state;
-        displaySection(navigation[state]);
+        // displaySection(navigation[state]);
+        selectNav(0);
         // document.querySelector(
         //   "[data-authenticated] > span"
         // ).innerHTML = `Welcome ${email}!`;
@@ -140,16 +141,17 @@
       console.log(reply.error);
     } else if (reply.success) {
       console.log(reply);
-      // authorize(true);
+      // authorize(true); // authorize the user
       // Get the state from the server and render the appropriate section
-      const state = reply.success.state;
-      displaySection(navigation[state]);
+      // const state = reply.success.state;
+      // displaySection(navigation[state]);
+      selectNav(0);
       /*
         TODO: Display welcome message or jump to another page
       */
-      document.querySelector(
-        "[data-authenticated] > span"
-      ).innerHTML = `Welcome ${email}!`;
+      // document.querySelector(
+      //   "[data-authenticated] > span"
+      // ).innerHTML = `Welcome ${email}!`;
     }
   };
   const signout = async (e) => {
@@ -159,7 +161,7 @@
     if (reply.success) {
       console.log("inside signout");
       console.log(reply.success);
-      // authorize(false);
+      authorize(false);
       // Get the state from the server and render the appropriate section
       const state = reply.success.state;
       displaySection(navigation[state]);

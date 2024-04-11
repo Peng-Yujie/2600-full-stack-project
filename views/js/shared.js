@@ -1,7 +1,6 @@
 /**
  *
  */
-
 const getJSONData = async (url, functionIN) => {
   if (url != "") {
     let b = window
@@ -218,7 +217,6 @@ const setFooter = () => {
   Html.makeFooter("foot");
 };
 
-
 const CreatePages = (inData) => {
   let out = "";
   let i = 0;
@@ -287,17 +285,21 @@ const makeNav = (inData) => {
 };
 
 const SetData = (inData) => {
- 	Data = inData;
+  Data = inData;
   CreatePages(inData);
   makeNav(inData);
   selectNav(0);
 };
-const SetUniversities = (inData) => {
-  UniversitiesNames = inData;
-};
+// const SetUniversities = (inData) => {
+//   UniversitiesNames = inData;
+// };
 
 setFooter();
 setHeader();
 setStyle("quartz.min.css");
 SetData(Data);
-
+document.querySelectorAll(".nav-item button").forEach((button, i) => {
+  button.onclick = () => {
+    selectNav(i);
+  };
+});
