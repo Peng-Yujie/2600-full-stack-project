@@ -151,6 +151,7 @@ function Score() {
   }
 }
 
+function post() {}
 function tick() {
   var now = Date.now();
   dt = now - lastUpdate;
