@@ -1,7 +1,7 @@
 (() => {
   //----------------------------------------------------
   // Initial values
-  let email = undefined;
+  let email = localStorage.getItem("currentUser") || undefined;
   // Navigation data
   // TODO: Update the navigation object with the correct sections
   // navigation = {
@@ -116,8 +116,9 @@
       } else if (reply.success) {
         console.log(reply);
         // authorize(true);
+        localStorage.setItem("currentUser", email);
         // Get the state from the server and render the appropriate section
-        const state = reply.success.state;
+        // const state = reply.success.state;
         // displaySection(navigation[state]);
         selectNav(0);
         // document.querySelector(
@@ -142,6 +143,7 @@
     } else if (reply.success) {
       console.log(reply);
       // authorize(true); // authorize the user
+      localStorage.setItem("currentUser", email);
       // Get the state from the server and render the appropriate section
       // const state = reply.success.state;
       // displaySection(navigation[state]);
@@ -161,10 +163,11 @@
     if (reply.success) {
       console.log("inside signout");
       console.log(reply.success);
-      authorize(false);
+      // authorize(false);
+      localStorage.removeItem("currentUser");
       // Get the state from the server and render the appropriate section
-      const state = reply.success.state;
-      displaySection(navigation[state]);
+      // const state = reply.success.state;
+      // displaySection(navigation[state]);
     }
     console.log(reply);
   };
