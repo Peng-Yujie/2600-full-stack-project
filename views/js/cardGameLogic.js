@@ -8,6 +8,7 @@ var cardsCliked;
 let Flipt = [];
 let NumberofMatches = 0;
 let NumberofMatchesNeed = 0;
+// Get the current user from localStorage
 let currentUser = localStorage.getItem("currentUser") || undefined;
 
 function makeTable(id) {

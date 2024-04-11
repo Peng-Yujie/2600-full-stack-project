@@ -99,12 +99,12 @@
         console.log(reply.error);
       } else if (reply.success) {
         console.log(reply);
-        // authorize(true);
+        authorize(true);
         localStorage.setItem("currentUser", email);
+        selectNav(0);
         // Get the state from the server and render the appropriate section
         // const state = reply.success.state;
         // displaySection(navigation[state]);
-        selectNav(0);
         // document.querySelector(
         //   "[data-authenticated] > span"
         // ).innerHTML = `Welcome ${email}!`;
@@ -126,10 +126,9 @@
       console.log(reply.error);
     } else if (reply.success) {
       console.log(reply);
-      // authorize(true); // authorize the user
+      authorize(true); // authorize the user
       localStorage.setItem("currentUser", email);
       selectNav(0);
-      authorize(true); // authorize the user
       // Get the state from the server and render the appropriate section
       // const state = reply.success.state;
       // displaySection(navigation[state]);
@@ -149,8 +148,9 @@
     if (reply.success) {
       console.log("inside signout");
       console.log(reply.success);
-      // authorize(false);
+      authorize(false);
       localStorage.removeItem("currentUser");
+      selectNav(0);
       // Get the state from the server and render the appropriate section
       // const state = reply.success.state;
       // displaySection(navigation[state]);
