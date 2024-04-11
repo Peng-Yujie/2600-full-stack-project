@@ -75,13 +75,13 @@
         console.log(reply.error);
       } else if (reply.success) {
         console.log(reply);
-        authorize(true);
-        /*
-          TODO: Display welcome message in proper location
-        */
+        // authorize(true);
+        const state = reply.success.state;
+        displaySection(state);
         // document.querySelector(
         //   "[data-authenticated] > span"
         // ).innerHTML = `Welcome ${email}!`;
+        //
       }
     } else {
       console.log("Passwords do not match. Re-enter your password");
@@ -99,7 +99,9 @@
       console.log(reply.error);
     } else if (reply.success) {
       console.log(reply);
-      authorize(true);
+      // authorize(true);
+      const state = reply.success.state;
+      displaySection(state);
       /*
         TODO: Display welcome message or jump to another page
       */
@@ -115,7 +117,9 @@
     if (reply.success) {
       console.log("inside signout");
       console.log(reply.success);
-      authorize(false);
+      // authorize(false);
+      const state = reply.success.state;
+      displaySection(state);
     }
     console.log(reply);
   };

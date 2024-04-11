@@ -5,6 +5,7 @@ const User = require("../models/user");
 const util = require("../models/util");
 const Post = require("../models/post");
 const { getDB } = require("../models/util"); // get access to the database
+const navigation = config.NAVIGATION;
 const memberController = express.Router();
 
 // User sign-up
@@ -22,7 +23,6 @@ memberController.post("/signup", util.logRequest, async (req, res) => {
         .json({ error: `${email} already exists. Choose a different email` });
     } else {
       // admin registration
-      // console.log("\t|", email, password, config.ADMIN, config.ADMIN_PASSWORD);
       let role =
         email === config.ADMIN && password === config.ADMIN_PASSWORD
           ? "admin"
@@ -40,6 +40,7 @@ memberController.post("/signup", util.logRequest, async (req, res) => {
         success: {
           email: email,
           message: `${email} was added successfuly to users.`,
+          state: role === "admin" ? navigation.users : navigation.home,
         },
       });
     }
@@ -73,6 +74,7 @@ memberController.post("/signin", util.logRequest, async (req, res) => {
             success: {
               email: email,
               message: `${email} signed in successfully as an admin.`,
+              state: navigation.users,
             },
           });
           return;
@@ -87,6 +89,7 @@ memberController.post("/signin", util.logRequest, async (req, res) => {
           success: {
             email: email,
             message: `${email} signed in successfully.`,
+            state: navigation.game,
           },
         });
       } else {
@@ -110,7 +113,10 @@ memberController.post("/signout", util.logRequest, async (req, res) => {
     let db = await getDB();
     let collection = db.collection("authUsers");
     await util.deleteOne(collection, { email: email });
-    res.status(200).json({ success: `${email} signed out successfully!` });
+    res.status(200).json({
+      success: `${email} signed out successfully!`,
+      state: navigation.home,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "An error occurred: " + err.message });
