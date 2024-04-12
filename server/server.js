@@ -11,6 +11,7 @@ const config = require("./config/config");
 const util = require("../models/util.js");
 const homeController = require("../controllers/homeController");
 const memberController = require("../controllers/memberController");
+const achievementController = require("../controllers/achievementController");
 
 /*
   Middleware
@@ -20,6 +21,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(homeController);
 server.use(memberController);
+server.use(achievementController);
 server.get("/logs", async (req, res, next) => {
   util.logRequest(req, res, next);
 });

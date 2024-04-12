@@ -40,6 +40,8 @@
       // Fetch high scores
       const userEmail = localStorage.getItem("currentUser");
       let data = await getJSONData(`/highscores/${userEmail}`);
+      let medals = await getJSONData(`/medals`);
+      // console.log(medals);
       let topScores = data.topScores;
       let userTopScores = data.userTopScores;
       console.log(topScores, userTopScores);
@@ -47,7 +49,13 @@
       let topTable = document.createElement("table");
       let userTable = document.createElement("table");
 
-      const createTable = (table, scores) => {
+      const createTable = (table, scores, medals) => {
+        if (!scores.length) {
+          let p = document.createElement("p");
+          p.textContent = "No scores available";
+          table.appendChild(p);
+          return;
+        }
         table.className = "table table-striped table-secondary";
         let thead = document.createElement("thead");
         let tbody = document.createElement("tbody");
@@ -66,7 +74,17 @@
         scores.forEach((score, index) => {
           let tr = document.createElement("tr");
           let tdRank = document.createElement("td");
-          tdRank.textContent = index + 1;
+          if (index < 3) {
+            let htmlCode = medals[index].htmlCode[0];
+            let span = document.createElement("span");
+            span.innerHTML = htmlCode;
+            tdRank.appendChild(span);
+          } else {
+            let htmlCode = medals[medals.length - 1].htmlCode[0];
+            let span = document.createElement("span");
+            span.innerHTML = htmlCode;
+            tdRank.appendChild(span);
+          }
           let tdUser = document.createElement("td");
           tdUser.textContent = score.User;
           let tdScore = document.createElement("td");
@@ -83,8 +101,8 @@
       };
 
       // Create tables
-      createTable(topTable, topScores);
-      createTable(userTable, userTopScores);
+      createTable(topTable, topScores, medals);
+      createTable(userTable, userTopScores, medals);
 
       // Append tables to the body or other container
       document.querySelector("#Card-3-Card-Body").innerHTML = "";
