@@ -142,29 +142,33 @@ memberController.post("/score", util.logRequest, async (req, res, next) => {
 });
 
 // Member routes
-memberController.get("/highscores", util.logRequest, async (req, res, next) => {
-  try {
-    let db = await getDB();
-    let collection = db.collection("scores");
-    let user = req.body.name;
-    let scores = await util.find(collection, {});
-    let topScores = scores.sort((a, b) => a.time - b.time).slice(0, 10);
-    let userTopScores = scores
-      .filter((score) => score.user === user)
-      .sort((a, b) => a.time - b.time)
-      .slice(0, 10);
-    res.status(200).json({
-      success: "High scores retrieved successfully",
-      topScores,
-      userTopScores,
-    });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while retrieving high scores" });
+memberController.get(
+  "/highscores/:userEmail",
+  util.logRequest,
+  async (req, res, next) => {
+    try {
+      let db = await getDB();
+      let collection = db.collection("scores");
+      let user = req.params.userEmail;
+      let scores = await util.find(collection, {});
+      let topScores = scores.sort((a, b) => a.Time - b.Time).slice(0, 10);
+      let userTopScores = scores
+        .filter((score) => score.User === user)
+        .sort((a, b) => a.Time - b.Time)
+        .slice(0, 10);
+      res.status(200).json({
+        success: "High scores retrieved successfully",
+        topScores,
+        userTopScores,
+      });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while retrieving high scores" });
+    }
   }
-});
+);
 
 // Admin routes
 memberController.get(

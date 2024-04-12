@@ -105,7 +105,7 @@ var Data = [
         header: "Users",
         class: " p-2",
         // body: users list table
-        body: '<table id="users-list" class="table table-striped"></table>',
+        body: '<table id="users-list" class="table table-striped table-secondary"></table>',
         footer: "",
       },
     ],

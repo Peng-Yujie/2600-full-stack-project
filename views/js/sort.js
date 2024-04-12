@@ -38,7 +38,8 @@
   const getHighScores = async () => {
     try {
       // Fetch high scores
-      let data = await getJSONData("/highscores");
+      const userEmail = localStorage.getItem("currentUser");
+      let data = await getJSONData(`/highscores/${userEmail}`);
       let topScores = data.topScores;
       let userTopScores = data.userTopScores;
       console.log(topScores, userTopScores);
@@ -47,7 +48,7 @@
       let userTable = document.createElement("table");
 
       const createTable = (table, scores) => {
-        table.className = "table table-striped";
+        table.className = "table table-striped table-secondary";
         let thead = document.createElement("thead");
         let tbody = document.createElement("tbody");
         // Add headers to the table
