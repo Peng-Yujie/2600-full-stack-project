@@ -26,6 +26,7 @@
   //   login: { title: "Login Page", url: "Account/Login", section: "Login" },
   // };
   // Navigation utility
+  /*
 	const selectNav = (id) => {
 		let i = 0;
 		while (i < Data.length) {
@@ -66,14 +67,21 @@
       } else hide(section);
     });
   };
-  const authorize = (isAuthenticated) => {
+  const authorize = (isAuthenticated, isAdmin = false) => {
     const authenticated = document.querySelectorAll("[data-authenticated]");
     const nonAuthenticated = document.querySelector("[data-nonAuthenticated]");
     if (isAuthenticated) {
-      authenticated.forEach((element) => show(element));
       hide(nonAuthenticated);
+      if (isAdmin) {
+        authenticated.forEach((element) => hide(element));
+        show(document.querySelector("[data-admin]"));
+        show(document.querySelector("#button-signout"));
+        return;
+      }
+      authenticated.forEach((element) => show(element));
     } else {
       authenticated.forEach((element) => hide(element));
+      hide(document.querySelector("[data-admin]"));
       show(nonAuthenticated);
     }
   };
@@ -88,13 +96,22 @@
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
-        "X-User-Email": email, // Add the email to the headers for server-side authentication
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
       body: JSON.stringify(data),
     });
     return response.json();
+  };
+
+  const getJSONData = async (url) => {
+    try {
+      let response = await fetch(url);
+      let data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   //----------------------------------------------------
@@ -114,11 +131,11 @@
         console.log(reply.error);
       } else if (reply.success) {
         console.log(reply);
-        authorize(true);
+        // Get the state from the server and render the appropriate section
+        const state = reply.success.state;
+        authorize(true, state === "admin");
         localStorage.setItem("currentUser", email);
         selectNav(0);
-        // Get the state from the server and render the appropriate section
-        // const state = reply.success.state;
         // displaySection(navigation[state]);
         // document.querySelector(
         //   "[data-authenticated] > span"
@@ -141,12 +158,11 @@
       console.log(reply.error);
     } else if (reply.success) {
       console.log(reply);
-      authorize(true); // authorize the user
+      // Get the state from the server and render the appropriate section
+      const state = reply.success.state;
+      authorize(true, state === "admin");
       localStorage.setItem("currentUser", email);
       selectNav(0);
-      // Get the state from the server and render the appropriate section
-      // const state = reply.success.state;
-      // displaySection(navigation[state]);
 
       /*
         TODO: Display welcome message or jump to another page
@@ -172,10 +188,79 @@
     }
     console.log(reply);
   };
+
+  //----------------------------------------------------
+  // Admin page
+  const userlist = async () => {
+    console.log("inside admin");
+    email = localStorage.getItem("currentUser");
+    const reply = await getJSONData(`/admin/${email}`);
+    // Get users data and render the table
+    let users = reply.users;
+    console.log(users);
+    const table = document.querySelector("#users-list");
+    table.innerHTML = "";
+    let thead = document.createElement("thead");
+    let tbody = document.createElement("tbody");
+    let tr = document.createElement("tr");
+    let headers = ["#", "Username", "Role", "Manage"];
+    headers.forEach((header) => {
+      let th = document.createElement("th");
+      th.textContent = header;
+      tr.appendChild(th);
+    });
+    thead.appendChild(tr);
+    table.appendChild(thead);
+    users.forEach((user, index) => {
+      let tr = document.createElement("tr");
+      let tdIndex = document.createElement("td");
+      tdIndex.textContent = index + 1;
+      let tdUser = document.createElement("td");
+      tdUser.textContent = user.email;
+      let tdRole = document.createElement("td");
+      tdRole.textContent = user.role;
+      let tdManage = document.createElement("td");
+      let button = document.createElement("button");
+      button.textContent = "Delete";
+      button.setAttribute("data-user", user.email);
+      if (user.role === "admin") button.disabled = true;
+      tdManage.appendChild(button);
+      tr.appendChild(tdIndex);
+      tr.appendChild(tdUser);
+      tr.appendChild(tdRole);
+      tr.appendChild(tdManage);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    document.querySelectorAll("[data-user]").forEach((button) => {
+      button.addEventListener("click", () =>
+        deleteUser(button.getAttribute("data-user"))
+      );
+    });
+  };
+
+  const admin = async () => {
+    await userlist();
+  };
+
+  const deleteUser = async (user) => {
+    let adminEmail = localStorage.getItem("currentUser");
+    let userEmail = user;
+    const reply = await postData("/admin/delete", { adminEmail, userEmail });
+    console.log(reply);
+    if (reply.success) {
+      admin();
+    } else {
+      console.log(reply.error);
+    }
+  };
+
+  //----------------------------------------------------
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#signup").onclick = signup;
     document.querySelector("#button-signout").onclick = signout;
     document.querySelector("#signin").onclick = signin;
+    document.querySelector("#button-Admin").addEventListener("click", admin);
   });
   authorize(false);
 })();
