@@ -11,6 +11,25 @@ let NumberofMatchesNeed = 0;
 // Get the current user from localStorage
 let currentUser = localStorage.getItem("currentUser") || undefined;
 
+//----------------------------------------------------
+// Fetch utility
+const postData = async (url = "", data = {}) => {
+  const response = await fetch(url, {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "X-User-Email": currentUser, // Add the email to the headers for server-side authentication
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: JSON.stringify(data),
+  });
+  return response.json();
+};
+
 function makeTable(id) {
   NumberofMatches = 0;
   let xSize = Xvar;
@@ -141,18 +160,25 @@ function thesame(obj) {
   }
 }
 
-function Score() {
+const Score = async () => {
   console.log(NumberofMatchesNeed + "<=" + NumberofMatches);
   console.log(NumberofMatchesNeed <= NumberofMatches);
   console.log(NumberofMatchesNeed + "==" + NumberofMatches);
   console.log(NumberofMatchesNeed <= NumberofMatches);
   if (NumberofMatchesNeed <= NumberofMatches) {
     let out = { name: currentUser, time: timeLimit, difficulty: difficulty };
+    // post the score to the server
+    // you can edit the passing message to the server
+    const reply = await postData("/score", out);
+    if (reply.error) {
+      console.log(reply.error);
+    } else if (reply.success) {
+      console.log(reply);
+    }
     console.log(out);
   }
-}
+};
 
-function post() {}
 function tick() {
   var now = Date.now();
   dt = now - lastUpdate;
