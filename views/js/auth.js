@@ -26,7 +26,22 @@
   //   login: { title: "Login Page", url: "Account/Login", section: "Login" },
   // };
   // Navigation utility
-
+	const selectNav = (id) => {
+		let i = 0;
+		while (i < Data.length) {
+			if (i == id) {
+				document.getElementById(Data[i]["name"]).hidden = false;
+				document.getElementById("button-" + Data[i]["name"]).className =
+					"btn btn-dark  hr hr-blurry m-2 type=submit";
+			} else {
+				document.getElementById(Data[i]["name"]).hidden = true;
+				document.getElementById("button-" + Data[i]["name"]).className =
+					"btn btn-primary  hr hr-blurry m-2 type=submit";
+			}
+			i++;
+		}
+		i = 0;
+	};*/
   //----------------------------------------------------
   // Utility functions
   const hide = (element) => (element.hidden = true);
