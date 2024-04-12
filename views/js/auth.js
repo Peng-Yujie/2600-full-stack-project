@@ -2,6 +2,7 @@
   //----------------------------------------------------
   // Initial values
   let email = localStorage.getItem("currentUser") || undefined;
+  let isAdmin = localStorage.getItem("isAdmin") || false;
   // Navigation data
   // TODO: Update the navigation object with the correct sections
   // navigation = {
@@ -47,6 +48,41 @@
   // Utility functions
   const hide = (element) => (element.hidden = true);
   const show = (element) => (element.hidden = false);
+  const authorize = (isAuthenticated, isAdmin) => {
+    const authenticated = document.querySelectorAll("[data-authenticated]");
+    const nonAuthenticated = document.querySelector("[data-nonAuthenticated]");
+    const adminElement = document.querySelector("[data-admin]");
+    if (!isAuthenticated) {
+      authenticated.forEach((element) => hide(element));
+      hide(adminElement);
+      show(nonAuthenticated);
+    } else {
+      if (isAdmin) {
+        authenticated.forEach((element) => hide(element));
+        show(adminElement);
+        show(document.querySelector("#button-signout"));
+      } else {
+        authenticated.forEach((element) => show(element));
+        hide(adminElement);
+      }
+      hide(nonAuthenticated);
+    }
+    // if (isAuthenticated) {
+    //   hide(nonAuthenticated);
+    //   if (isAdmin) {
+    //     authenticated.forEach((element) => hide(element));
+    //     show(document.querySelector("[data-admin]"));
+    //     show(document.querySelector("#button-signout"));
+    //     return;
+    //   }
+    //   hide(document.querySelector("[data-admin]"));
+    //   authenticated.forEach((element) => show(element));
+    // } else {
+    //   authenticated.forEach((element) => hide(element));
+    //   hide(document.querySelector("[data-admin]"));
+    //   show(nonAuthenticated);
+    // }
+  };
   const setActivePage = (section) => {
     console.log(section);
     let menuItems = document.querySelectorAll("a[data-page]");
@@ -66,24 +102,6 @@
         setActivePage(name);
       } else hide(section);
     });
-  };
-  const authorize = (isAuthenticated, isAdmin = false) => {
-    const authenticated = document.querySelectorAll("[data-authenticated]");
-    const nonAuthenticated = document.querySelector("[data-nonAuthenticated]");
-    if (isAuthenticated) {
-      hide(nonAuthenticated);
-      if (isAdmin) {
-        authenticated.forEach((element) => hide(element));
-        show(document.querySelector("[data-admin]"));
-        show(document.querySelector("#button-signout"));
-        return;
-      }
-      authenticated.forEach((element) => show(element));
-    } else {
-      authenticated.forEach((element) => hide(element));
-      hide(document.querySelector("[data-admin]"));
-      show(nonAuthenticated);
-    }
   };
 
   //----------------------------------------------------
@@ -132,9 +150,13 @@
       } else if (reply.success) {
         console.log(reply);
         // Get the state from the server and render the appropriate section
-        const state = reply.success.state;
-        authorize(true, state === "admin");
         localStorage.setItem("currentUser", email);
+        const state = reply.success.state;
+        if (state === "admin") {
+          isAdmin = true;
+          localStorage.setItem("isAdmin", true);
+        }
+        authorize(true, isAdmin);
         selectNav(0);
         // displaySection(navigation[state]);
         // document.querySelector(
@@ -159,9 +181,13 @@
     } else if (reply.success) {
       console.log(reply);
       // Get the state from the server and render the appropriate section
-      const state = reply.success.state;
-      authorize(true, state === "admin");
       localStorage.setItem("currentUser", email);
+      const state = reply.success.state;
+      if (state === "admin") {
+        isAdmin = true;
+        localStorage.setItem("isAdmin", true);
+      }
+      authorize(true, isAdmin);
       selectNav(0);
 
       /*
@@ -179,8 +205,11 @@
     if (reply.success) {
       console.log("inside signout");
       console.log(reply.success);
-      authorize(false);
       localStorage.removeItem("currentUser");
+      localStorage.removeItem("isAdmin");
+      email = undefined;
+      isAdmin = false;
+      authorize(false);
       selectNav(0);
       // Get the state from the server and render the appropriate section
       // const state = reply.success.state;
@@ -257,10 +286,10 @@
 
   //----------------------------------------------------
   document.addEventListener("DOMContentLoaded", () => {
+    authorize(email, isAdmin);
     document.querySelector("#signup").onclick = signup;
     document.querySelector("#button-signout").onclick = signout;
     document.querySelector("#signin").onclick = signin;
     document.querySelector("#button-Admin").addEventListener("click", admin);
   });
-  authorize(false);
 })();
