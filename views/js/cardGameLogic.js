@@ -8,6 +8,7 @@ var cardsCliked;
 let Flipt = [];
 let NumberofMatches = 0;
 let NumberofMatchesNeed = 0;
+let done = false;
 // Get the current user from localStorage
 let currentUser = localStorage.getItem("currentUser") || undefined;
 
@@ -31,6 +32,7 @@ const postData = async (url = "", data = {}) => {
 };
 
 function makeTable(id) {
+	done = false;
 	NumberofMatches = 0;
 	let xSize = Xvar;
 	let ySize = Yvar
@@ -106,9 +108,10 @@ function CardFlip(Xpos, Ypos)
 			}
 		});
 	} else {
-		Same = true
+		Same = true; 
 	}
 	if (!Same) {
+		
 		objs.push({ ob: object, X: Xpos, Y: Ypos, time: 0, side: false, half: false,Lable: o2})
 	}
 	console.log("X: " + Xpos + " Y: " + Ypos)
@@ -131,17 +134,14 @@ function thesame(obj) {
       }
     });
     if (match) {
-      //console.log("same")
       Flipt.forEach((card) => {
         let temp = document.getElementById(card.X + "-" + card.Y);
-        //console.log(card)
         temp.onclick = "";
         temp.className = "bg-success rounded";
         NumberofMatches++;
         Score();
       });
     } else {
-      //console.log("test");
       Flipt.forEach((card) => {
         cardsCliked[card.X][card.Y] = false;
         setTimeout(() => CardFlip(card.X, card.Y), 250);
@@ -157,9 +157,11 @@ const Score = async () => {
   console.log(NumberofMatchesNeed + "==" + NumberofMatches);
   console.log(NumberofMatchesNeed <= NumberofMatches);
   if (NumberofMatchesNeed <= NumberofMatches) {
-    let out = { name: currentUser, time: timeLimit, difficulty: difficulty };
+	done = true;
+    let out = { name: currentUser, time:( timeLimit-timeLeft), difficulty: difficulty };
     // post the score to the server
     // you can edit the passing message to the server
+    done = true;
     const reply = await postData("/score", out);
     if (reply.error) {
       console.log(reply.error);
@@ -177,11 +179,14 @@ function tick()
 	lastUpdate = now;
 	let i = 0;
 	
-	if (timeLeft > 0) {
+	if (timeLeft > 0&& !done) 
+	{
 		size = (objs.length)
 		while (i < size) {
 			objs[i].time += dt / AnimashonTime
-			objs[i].ob.style.width = 100 * (1 - Math.sin(Math.PI * objs[i].time)) + "px";
+			let  size = 100 * (1 - Math.sin(Math.PI * objs[i].time))
+			size  = size <= 100 ? size : 100
+			objs[i].ob.style.width =  size  + "px";
 			if (objs[i].time > 1) {
 				if (objs[i].ob.alt != "CardBack") {
 					thesame(objs[i]);

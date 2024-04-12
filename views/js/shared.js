@@ -76,7 +76,7 @@ class HtmlObjects {
 		card.innerHTML = out;
 		card.className += classes;
 	}
-	makeDropdown(name, inputs, ifmultiple, inID) {
+	makeDropdown(name, inputs, ifmultiple, infun='') {
 		let out = '<div class="dropdown">';
 		out +=
 			'<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink' +
@@ -110,11 +110,7 @@ class HtmlObjects {
 				'" style="max-height: 280px; overflow-x: hidden;">';
 			while (i2 < inputs.length) {
 				out +=
-					'<li><a class="dropdown-item"  onclick=\'document.getElementById("dropdownMenuLink' +
-					name +
-					'").innerHTML="' +
-					inputs[i2] +
-					'"\' href="#"';
+					'<li><a class="dropdown-item"  onclick=\''+infun+' \' href="#"';
 				out += ">" + inputs[i2] + "</a></li> ";
 				i2++;
 			}
@@ -251,7 +247,8 @@ const CreatePages = (inData) => {
 			).innerHTML += Html.makeDropdown(
 				inData[i]["Dropdowns"][i1]["id"],
 				inData[i]["Dropdowns"][i1]["List"],
-				inData[i]["Dropdowns"][i1]["muti"]
+				inData[i]["Dropdowns"][i1]["muti"],
+				inData[i]["Dropdowns"][i1]["functions"]
 			);
 			i1++;
 		}

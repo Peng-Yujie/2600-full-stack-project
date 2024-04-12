@@ -41,7 +41,7 @@
 			i++;
 		}
 		i = 0;
-	};*/
+	};
   //----------------------------------------------------
   // Utility functions
   const hide = (element) => (element.hidden = true);
