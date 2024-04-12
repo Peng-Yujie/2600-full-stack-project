@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const config = require("../server/config/config");
 const User = require("../models/user");
 const util = require("../models/util");
-const Post = require("../models/post");
+const Score = require("../models/score");
 const { getDB } = require("../models/util"); // get access to the database
 const memberController = express.Router();
 
@@ -130,44 +130,42 @@ memberController.post("/signout", util.logRequest, async (req, res) => {
 });
 
 // Member routes
-memberController.get("/member", util.logRequest, async (req, res, next) => {
-  console.info("Inside member.html");
-  // let collection = client.db().collection("Posts");
-  let db = await getDB();
-  let collection = db.collection("Posts");
-  let post = Post("Security", "AAA is a key concept in security", "Pentester");
-  util.insertOne(collection, post);
-  res.sendFile("member.html", { root: config.ROOT });
-});
+// memberController.get("/member", util.logRequest, async (req, res, next) => {
+//   console.info("Inside member.html");
+//   // let collection = client.db().collection("Posts");
+//   let db = await getDB();
+//   let collection = db.collection("Posts");
+//   let post = Post("Security", "AAA is a key concept in security", "Pentester");
+//   util.insertOne(collection, post);
+//   res.sendFile("member.html", { root: config.ROOT });
+// });
 
-memberController.get("/posts", util.logRequest, async (req, res, next) => {
-  // let collection = client.db().collection("Posts");
-  let db = await getDB();
-  let collection = db.collection("Posts");
-  let posts = await util.find(collection, {});
-  //Utils.saveJson(__dirname + '/../data/topics.json', JSON.stringify(topics))
-  res.status(200).json(posts);
-});
+// memberController.get("/posts", util.logRequest, async (req, res, next) => {
+//   // let collection = client.db().collection("Posts");
+//   let db = await getDB();
+//   let collection = db.collection("Posts");
+//   let posts = await util.find(collection, {});
+//   //Utils.saveJson(__dirname + '/../data/topics.json', JSON.stringify(topics))
+//   res.status(200).json(posts);
+// });
 
-memberController.get(
-  "/postMessage",
-  util.logRequest,
-  async (req, res, next) => {
-    res.sendFile("postMessage.html", { root: config.ROOT });
-  }
-);
+// memberController.get(
+//   "/postMessage",
+//   util.logRequest,
+//   async (req, res, next) => {
+//     res.sendFile("postMessage.html", { root: config.ROOT });
+//   }
+// );
 
-memberController.post("/addPost", util.logRequest, async (req, res, next) => {
-  // let collection = client.db().collection("Posts");
+memberController.post("/score", util.logRequest, async (req, res, next) => {
   let db = await getDB();
-  let collection = db.collection("Posts");
-  let topic = req.body.topic;
-  let message = req.body.message;
-  let user = req.body.by;
-  let post = Post(topic, message, user);
-  util.insertOne(collection, post);
-  // TODO
-  // res.redirect("/posts.html");
+  let collection = db.collection("scores");
+  let user = req.body.name;
+  let time = req.body.time;
+  let difficulty = req.body.difficulty;
+  let score = Score(user, time, difficulty);
+  util.insertOne(collection, score);
+  res.status(200).json({ success: "Score added successfully" });
 });
 
 // Admin routes

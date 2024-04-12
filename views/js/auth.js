@@ -1,7 +1,7 @@
 (() => {
   //----------------------------------------------------
   // Initial values
-  let email = undefined;
+  let email = localStorage.getItem("currentUser") || undefined;
   // Navigation data
   // TODO: Update the navigation object with the correct sections
   // navigation = {
@@ -26,7 +26,6 @@
   //   login: { title: "Login Page", url: "Account/Login", section: "Login" },
   // };
   // Navigation utility
-/*
 	const selectNav = (id) => {
 		let i = 0;
 		while (i < Data.length) {
@@ -115,11 +114,12 @@
         console.log(reply.error);
       } else if (reply.success) {
         console.log(reply);
-        // authorize(true);
-        // Get the state from the server and render the appropriate section
-        const state = reply.success.state;
-        // displaySection(navigation[state]);
+        authorize(true);
+        localStorage.setItem("currentUser", email);
         selectNav(0);
+        // Get the state from the server and render the appropriate section
+        // const state = reply.success.state;
+        // displaySection(navigation[state]);
         // document.querySelector(
         //   "[data-authenticated] > span"
         // ).innerHTML = `Welcome ${email}!`;
@@ -141,8 +141,9 @@
       console.log(reply.error);
     } else if (reply.success) {
       console.log(reply);
-      selectNav(0);
       authorize(true); // authorize the user
+      localStorage.setItem("currentUser", email);
+      selectNav(0);
       // Get the state from the server and render the appropriate section
       // const state = reply.success.state;
       // displaySection(navigation[state]);
@@ -163,9 +164,11 @@
       console.log("inside signout");
       console.log(reply.success);
       authorize(false);
+      localStorage.removeItem("currentUser");
+      selectNav(0);
       // Get the state from the server and render the appropriate section
-      const state = reply.success.state;
-      displaySection(navigation[state]);
+      // const state = reply.success.state;
+      // displaySection(navigation[state]);
     }
     console.log(reply);
   };

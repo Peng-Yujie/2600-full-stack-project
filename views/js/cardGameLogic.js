@@ -1,13 +1,35 @@
-var timeLimit = 180000
-var timeLeft = 0
+var timeLimit = 180000;
+var timeLeft = 0;
 let objs = [];
-let needToMatch = 2
-let AnimashonTime = 500
+let needToMatch = 2;
+let AnimashonTime = 500;
 var cards;
 var cardsCliked;
 let Flipt = [];
-let NumberofMatches  = 0;
-let NumberofMatchesNeed  = 0;
+let NumberofMatches = 0;
+let NumberofMatchesNeed = 0;
+// Get the current user from localStorage
+let currentUser = localStorage.getItem("currentUser") || undefined;
+
+//----------------------------------------------------
+// Fetch utility
+const postData = async (url = "", data = {}) => {
+  const response = await fetch(url, {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "X-User-Email": currentUser, // Add the email to the headers for server-side authentication
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: JSON.stringify(data),
+  });
+  return response.json();
+};
+
 function makeTable(id) {
 	NumberofMatches = 0;
 	let xSize = Xvar;
@@ -32,11 +54,9 @@ function makeTable(id) {
 	document.getElementById(id).innerHTML = out;
 	makerandom(xSize, ySize)
 }
-function StartTimer()
-{
-	Timer = document.getElementById("Timer")
-	timeLeft = timeLimit;
-
+function StartTimer() {
+  Timer = document.getElementById("Timer");
+  timeLeft = timeLimit;
 }
 function makerandom(xSize, ySize) {
 	cards = [...Array(xSize)].map((e) => Array(ySize).fill(0));
@@ -67,11 +87,10 @@ function makerandom(xSize, ySize) {
 	StartTimer()
 }
 function clickCard(Xpos, Ypos) {
-	if (objs.length + Flipt.length < needToMatch) {
-		CardFlip(Xpos, Ypos)
-		cardsCliked[Xpos][Ypos] = true;
-	}
-
+  if (objs.length + Flipt.length < needToMatch) {
+    CardFlip(Xpos, Ypos);
+    cardsCliked[Xpos][Ypos] = true;
+  }
 }
 function CardFlip(Xpos, Ypos)
 {
@@ -97,66 +116,60 @@ function CardFlip(Xpos, Ypos)
 }
 var lastUpdate = Date.now();
 var myInterval = setInterval(tick, 0);
-var dt
+var dt;
 
+function thesame(obj) {
+  Flipt.push(obj);
+  if (Flipt.length >= needToMatch) {
+    let a = cards[Flipt[0].X][Flipt[0].Y];
+    let match = true;
 
-function thesame(obj) 
-{
-	Flipt.push(obj);
-	if (Flipt.length >= needToMatch) 
-	{
-
-		let a = cards[Flipt[0].X][Flipt[0].Y]
-		let match = true;
-		
-		Flipt.forEach((card) => {
-			//console.log(cards[card.X][card.Y]);
-			if (a != cards[card.X][card.Y]) {
-				match = false;
-			}
-		});
-		if (match) {
-			//console.log("same")
-			Flipt.forEach((card) => 
-			{
-				let temp = document.getElementById(card.X + "-" +  card.Y );
-				//console.log(card)
-				temp.onclick=''
-				temp.className = "bg-success rounded";
-				NumberofMatches++
-				Score();
-			});
-		}
-		else {
-			//console.log("test");
-			Flipt.forEach((card) => 
-			{
-				cardsCliked[  card.X  ][  card.Y  ]=false
-				setTimeout(()=>CardFlip(card.X,card.Y),250); 
-			});
-		}
-		Flipt = [];
-	}
+    Flipt.forEach((card) => {
+      //console.log(cards[card.X][card.Y]);
+      if (a != cards[card.X][card.Y]) {
+        match = false;
+      }
+    });
+    if (match) {
+      //console.log("same")
+      Flipt.forEach((card) => {
+        let temp = document.getElementById(card.X + "-" + card.Y);
+        //console.log(card)
+        temp.onclick = "";
+        temp.className = "bg-success rounded";
+        NumberofMatches++;
+        Score();
+      });
+    } else {
+      //console.log("test");
+      Flipt.forEach((card) => {
+        cardsCliked[card.X][card.Y] = false;
+        setTimeout(() => CardFlip(card.X, card.Y), 250);
+      });
+    }
+    Flipt = [];
+  }
 }
 
+const Score = async () => {
+  console.log(NumberofMatchesNeed + "<=" + NumberofMatches);
+  console.log(NumberofMatchesNeed <= NumberofMatches);
+  console.log(NumberofMatchesNeed + "==" + NumberofMatches);
+  console.log(NumberofMatchesNeed <= NumberofMatches);
+  if (NumberofMatchesNeed <= NumberofMatches) {
+    let out = { name: currentUser, time: timeLimit, difficulty: difficulty };
+    // post the score to the server
+    // you can edit the passing message to the server
+    const reply = await postData("/score", out);
+    if (reply.error) {
+      console.log(reply.error);
+    } else if (reply.success) {
+      console.log(reply);
+    }
+    console.log(out);
+  }
+};
 
-function Score()
-{
-	console.log(NumberofMatchesNeed  +"<="+ NumberofMatches );
-	console.log(NumberofMatchesNeed  <= NumberofMatches );
-		console.log(NumberofMatchesNeed  +"=="+ NumberofMatches );
-	console.log(NumberofMatchesNeed  <= NumberofMatches );
-	if (NumberofMatchesNeed <= NumberofMatches)
-	{
-		let out = {'name':user,"time":timeLimit,"difficulty":difficulty}
-		console.log(out);
-	}
-}
-
-function post()
-{
-	
-}
 function tick() 
 {
 	var now = Date.now();
