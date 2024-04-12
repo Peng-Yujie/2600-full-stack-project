@@ -19,8 +19,9 @@ function makeTable(id) {
 		out += "<tr>";
 		while (ix < xSize) {
 			out +=
-				'<td class="text-center"><img src="images/cards.png" id=' + ix + "-" + iy +
-				' class="bg-light rounded" style="height:150px; width:100px; margin: 0 auto;background-size: " onclick="clickCard(' + ix + "," + iy + ');"alt="CardBack"></div></td>';
+				'<td class="text-center"><div class="cons"><img src="images/cards.png" id=' + ix + "-" + iy +
+				' class="bg-light rounded" style="height:150px; width:100px; margin: 0 auto;background-size: " onclick="clickCard(' + ix + "," + iy + ');"alt="CardBack">'+
+				'<div class="h3" id=' + ix + "-" + iy +'-Text style="position: absolute;transform: translate(0%, -100%);height:150px; color: red; line-height: 150px; width:100px;" hidden>12</div></div></td>';
 			ix++;
 		}
 		out += "</tr>";
@@ -56,6 +57,7 @@ function makerandom(xSize, ySize) {
 			}
 			else {
 				cards[x][y] = i;
+				document.getElementById(x + "-" + y+'-Text').innerHTML = i;
 			}
 			i2++;
 		}
@@ -76,7 +78,7 @@ function CardFlip(Xpos, Ypos)
 	if(!cardsCliked[Xpos][Ypos])
 	{
 	let object = document.getElementById(Xpos + "-" + Ypos);
-	
+	let o2 = document.getElementById(Xpos + "-" + Ypos+'-Text');
 	let Same = false
 	if (objs.length + Flipt.length < needToMatch) {
 		objs.forEach((obj) => {
@@ -88,7 +90,7 @@ function CardFlip(Xpos, Ypos)
 		Same = true
 	}
 	if (!Same) {
-		objs.push({ ob: object, X: Xpos, Y: Ypos, time: 0, side: false, half: false })
+		objs.push({ ob: object, X: Xpos, Y: Ypos, time: 0, side: false, half: false,Lable: o2})
 	}
 	console.log("X: " + Xpos + " Y: " + Ypos)
 	}
@@ -179,12 +181,14 @@ function tick()
 				objs[i].half = true;
 				//console.log(objs[i].ob.src)
 				if (objs[i].ob.alt == "CardBack") {
-					objs[i].ob.src = "";
+					objs[i].ob.src = "images/cards-Front.png";
 					objs[i].ob.alt = "" + cards[objs[i].X][objs[i].Y]
+					objs[i].Lable.hidden = false
 				}
 				else {
 					objs[i].ob.src = "images/cards.png";
 					objs[i].ob.alt = "CardBack"
+					objs[i].Lable.hidden = true
 				}
 			}
 			i++;
