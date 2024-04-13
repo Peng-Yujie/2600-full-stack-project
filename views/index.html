@@ -1,31 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head id="head"></head>
-<style>
-.cent {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: red;
-}
 
-.cons {
-	padding: 0px;
-	max-width:  100px;
-	position: relative;
-	text-align: center;
-}
-</style>
+<head id="head"></head>
+
+
+
 <body>
-	<div class="container" back>
-		<nav id="topNav"
-			class="navbar navbar-expand-lg navbar-dark bg-info p-2"></nav>
+	<blockquote id="Terms-and-Conditions" class="" style="position:absolute; width: 100%;	z-index: 1;">
+		<div class="container card p-0 mx-auto">
+			<div class="card-header card-title bg-info h2 text-center">Terms and Conditions</div>
+			<div id="Card-5-Card-Body" class="card-body bg-dark bg-opacity-75 rounded-bottom">
+
+				<ol class="">
+				  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus enim, impedit illum voluptate
+				    iure in distinctio asperiores, repellat ipsam sed eos reiciendis officia blanditiis illo unde
+				    aperiam maxime mollitia aspernatur.</li>
+				  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum optio ipsam ipsa tempore ab iste
+				    dolore distinctio earum et? Quia officia alias aperiam fugit quas molestias odio repellendus,
+				    officiis aut!</li>
+				  <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum iure commodi unde possimus
+				    voluptates sed iste earum fuga quis architecto sint ullam dolore, quia similique consectetur, quo
+				    tempora, harum assumenda!</li>
+				  <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet incidunt excepturi totam molestias,
+				    repellat dolore quia eos ullam vero nisi, natus, recusandae asperiores temporibus deserunt
+				    voluptates nulla libero nemo. A?</li>
+				  <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam iure, quos repudiandae
+				    reprehenderit vel hic? Nam quis vel, id debitis repellendus necessitatibus facilis animi, adipisci
+				    explicabo ipsum exercitationem eius sequi.</li>
+				</ol>
+				<hr class="hrs" />
+				      <div class="input-group mb-3 bg-dark rounded">
+				        <div class="input-group-text">
+				          <input class="form-check-input " type="checkbox" value=""
+				            aria-label="Checkbox for following text input" id="agree">
+				        </div>
+				        <input type="text" class="form-control " aria-label="I agree to terms & conditions" value="I agree"
+				          disabled>
+				      </div>
+					  <form method="dialog" class="text-center mb-3">
+					    <button class="btn btn-lg btn-info" id="noticeButton">OK</button>
+					  </form>
+				</div>
+				</div>
+
+			</div>
+		</blockquote>​
+	<div class="container">
+		​​​​​​​​ 
+		<nav id="topNav" class="navbar navbar-expand-lg navbar-dark bg-info p-2"></nav>
+
 		<hr class="hrs" />
 		<main id="mainBody"></main>
+
 		<hr class="hrs" />
 		<footer id="foot"></footer>
 	</div>
+	
 </body>
 <script type="text/javascript" src="data/WebPageData.js"></script>
 <script type="text/javascript" src="js/shared.js"></script>
@@ -35,4 +65,6 @@
 <script type="text/javascript" src="js/auth.js"></script>
 <script type="text/javascript" src="js/Setting.js"></script>
 <script type="text/javascript" src="js/UserManigment.js"></script>
+<script type="text/javascript" src="js/noticeAgreement.js"></script>
+
 </html>
