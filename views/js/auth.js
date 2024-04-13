@@ -43,7 +43,7 @@
 			i++;
 		}
 		i = 0;
-	};
+	};*/
   //----------------------------------------------------
   // Utility functions
   const hide = (element) => (element.hidden = true);
@@ -60,7 +60,7 @@
       if (isAdmin) {
         authenticated.forEach((element) => hide(element));
         show(adminElement);
-        show(document.querySelector("#button-signout"));
+        show(document.querySelector("#button-Signout"));
       } else {
         authenticated.forEach((element) => show(element));
         hide(adminElement);
@@ -288,7 +288,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     authorize(email, isAdmin);
     document.querySelector("#signup").onclick = signup;
-    document.querySelector("#button-signout").onclick = signout;
+    document.querySelector("#button-Signout").onclick = signout;
     document.querySelector("#signin").onclick = signin;
     document.querySelector("#button-Admin").addEventListener("click", admin);
   });

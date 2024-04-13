@@ -19,117 +19,123 @@
 
 let now = new Date();
 class HtmlObjects {
-	constructor(mainBodyIn) {
-		/** @type {HTMLElement} - the image as the HTMLElement */
-		this.mainBody = mainBodyIn;
-	}
-	makeRGBText(text, R, G, B) {
-		let out = '<b style="color: rgb(' + R + "," + G + "," + B + ');">';
-		out += text;
-		object1 = out += "</b>";
-		return out;
-	}
-	makeButton(name, classes, type, call, authenticated = 0) {
-		let out = "<" + type + " ";
-		if (authenticated == 1) 
-		{
-					out += ' data-authenticated ';
-		}
-		else if (authenticated == 2) {
-			out += ' data-nonAuthenticated ';
-		}
-		out += 'id="button-' + name.replace(/\s/g, "");
-		out += '" class="btn ';
-		out += classes;
-		out += ' m-2 type=submit"';
-		if (type == "a") {
-			out += 'href="';
-		} else if ("button") {
-			out += 'onclick="';
-		}
-		out += call;
-		out += '">';
-		out += name;
-		out += "</" + type + ">";
-		return out;
-	}
-	cards(id, title, text, classes, foot = "") {
-		let card = document.getElementById(id);
-		let out =
-			'<div class="card p-0"><div class="card-header card-title bg-info h2 text-center">';
-		out += title;
-		out +=
-			'</div><div id="' +
-			id +
-			'-Card-Body" class="card-body bg-secondary rounded-bottom"><p class="card-text h4">';
-		out += text;
-		out += "</div>";
-		if (foot != "") {
-			out +=
-				'<div id="' +
-				id +
-				'-Card-footer" class="card-footer"><p class="card-text text-muted h4">';
-			out += foot;
-			out += "</div>";
-		}
-		out += "</div>";
-		card.innerHTML = out;
-		card.className += classes;
-	}
-	makeDropdown(name, inputs, ifmultiple, infun='') {
-		let out = '<div class="dropdown">';
-		out +=
-			'<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink' +
-			name +
-			'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-		out += name;
-		out += "</button>";
-		let i2 = 0;
-		if (ifmultiple) {
-			out +=
-				'<select  id="multiple' +
-				name +
-				'" class="dropdown-menu" aria-labelledby="dropdownMenuLink' +
-				name +
-				'" multiple style="max-height: 280px; overflow-x: hidden;">';
+  constructor(mainBodyIn) {
+    /** @type {HTMLElement} - the image as the HTMLElement */
+    this.mainBody = mainBodyIn;
+  }
+  makeRGBText(text, R, G, B) {
+    let out = '<b style="color: rgb(' + R + "," + G + "," + B + ');">';
+    out += text;
+    object1 = out += "</b>";
+    return out;
+  }
+  makeButton(name, classes, type, call, authenticated = 0) {
+    let out = "<" + type + " ";
+    if (authenticated == 1) {
+      out += " data-authenticated ";
+    } else if (authenticated == 2) {
+      out += " data-nonAuthenticated ";
+    } else if (authenticated == 3) {
+      out += " data-admin ";
+    }
+    out += 'id="button-' + name.replace(/\s/g, "");
+    out += '" class="btn ';
+    out += classes;
+    out += ' m-2 type=submit"';
+    if (type == "a") {
+      out += 'href="';
+    } else if ("button") {
+      out += 'onclick="';
+    }
+    out += call;
+    out += '">';
+    out += name;
+    out += "</" + type + ">";
+    return out;
+  }
+  cards(id, title, text, classes, foot = "") {
+    let card = document.getElementById(id);
+    let out =
+      '<div class="card p-0"><div class="card-header card-title bg-info h2 text-center">';
+    out += title;
+    out +=
+      '</div><div id="' +
+      id +
+      '-Card-Body" class="card-body bg-secondary rounded-bottom"><p class="card-text h4">';
+    out += text;
+    out += "</div>";
+    if (foot != "") {
+      out +=
+        '<div id="' +
+        id +
+        '-Card-footer" class="card-footer"><p class="card-text text-muted h4">';
+      out += foot;
+      out += "</div>";
+    }
+    out += "</div>";
+    card.innerHTML = out;
+    card.className += classes;
+  }
+  makeDropdown(name, inputs, ifmultiple, infun = "") {
+    let out = '<div class="dropdown">';
+    out +=
+      '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink' +
+      name +
+      '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+    out += name;
+    out += "</button>";
+    let i2 = 0;
+    if (ifmultiple) {
+      out +=
+        '<select  id="multiple' +
+        name +
+        '" class="dropdown-menu" aria-labelledby="dropdownMenuLink' +
+        name +
+        '" multiple style="max-height: 280px; overflow-x: hidden;">';
 
-			console.log(inputs);
-			while (i2 < inputs.length) {
-				out +=
-					'<option value="' +
-					inputs[i2] +
-					'"><a class="dropdown-item" href="#"';
-				out += ">" + inputs[i2] + "</a></option> ";
-				i2++;
-			}
-			out += "</select>";
-		} else {
-			out +=
-				'<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink' +
-				name +
-				'" style="max-height: 280px; overflow-x: hidden;">';
-			while (i2 < inputs.length) {
-				out +=
-					'<li><a class="dropdown-item"  onclick=\''+infun+' \' href="#"';
-				out += ">" + inputs[i2] + "</a></li> ";
-				i2++;
-			}
-			out += "</ul>";
-		}
-		out += "</div>";
-		return out;
-	}
-	makeDiv(id, Class = "") {
-		return '<div id="' + id + '" class="' + Class + '"></div>';
-	}
-	makenav(id, buttons, webOn) {
-		const buttonsHtml = buttons
-			.map(([name, call, ath], i) => {
-				const inClass = i === webOn ? "btn-dark" : "btn-primary";
-				return `<li class="nav-item">${this.makeButton(name, inClass, "button", call, ath)}</li>`;
-			})
-			.join("");
-		const out = `
+      console.log(inputs);
+      while (i2 < inputs.length) {
+        out +=
+          '<option value="' +
+          inputs[i2] +
+          '"><a class="dropdown-item" href="#"';
+        out += ">" + inputs[i2] + "</a></option> ";
+        i2++;
+      }
+      out += "</select>";
+    } else {
+      out +=
+        '<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink' +
+        name +
+        '" style="max-height: 280px; overflow-x: hidden;">';
+      while (i2 < inputs.length) {
+        out +=
+          '<li><a class="dropdown-item"  onclick=\'' + infun + ' \' href="#"';
+        out += ">" + inputs[i2] + "</a></li> ";
+        i2++;
+      }
+      out += "</ul>";
+    }
+    out += "</div>";
+    return out;
+  }
+  makeDiv(id, Class = "") {
+    return '<div id="' + id + '" class="' + Class + '"></div>';
+  }
+  makenav(id, buttons, webOn) {
+    const buttonsHtml = buttons
+      .map(([name, call, ath], i) => {
+        const inClass = i === webOn ? "btn-dark" : "btn-primary";
+        return `<li class="nav-item">${this.makeButton(
+          name,
+          inClass,
+          "button",
+          call,
+          ath
+        )}</li>`;
+      })
+      .join("");
+    const out = `
 			<a class="navbar-brand d-flex align-items-center" href="#">
 				<h2 class="m-0"><span class="p-1">🃏</span>Memory Game</h2>
 			</a>
@@ -139,7 +145,7 @@ class HtmlObjects {
 			<div class="collapse navbar-collapse" id="navbarText">
 				<ul class="navbar-nav mr-auto">
 					${buttonsHtml} ${this.makeButton(
-      "signout",
+      "Signout",
       "btn btn-primary hr hr-blurry m-2",
       "button",
       "",
@@ -247,19 +253,19 @@ const CreatePages = (inData) => {
     }
     i1 = 0;
 
-		while (i1 < inData[i]["Dropdowns"].length) {
-			document.getElementById(
-				inData[i]["Dropdowns"][i1]["insideID"]
-			).innerHTML += Html.makeDropdown(
-				inData[i]["Dropdowns"][i1]["id"],
-				inData[i]["Dropdowns"][i1]["List"],
-				inData[i]["Dropdowns"][i1]["muti"],
-				inData[i]["Dropdowns"][i1]["functions"]
-			);
-			i1++;
-		}
-		i++;
-	}
+    while (i1 < inData[i]["Dropdowns"].length) {
+      document.getElementById(
+        inData[i]["Dropdowns"][i1]["insideID"]
+      ).innerHTML += Html.makeDropdown(
+        inData[i]["Dropdowns"][i1]["id"],
+        inData[i]["Dropdowns"][i1]["List"],
+        inData[i]["Dropdowns"][i1]["muti"],
+        inData[i]["Dropdowns"][i1]["functions"]
+      );
+      i1++;
+    }
+    i++;
+  }
 };
 
 const selectNav = (id) => {
