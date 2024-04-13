@@ -60,17 +60,19 @@ var Data = [
         id: "Card-5",
         header: "Setting",
         class: "p-2 text-center",
-        body: "Select difficulty",
-        footer:
-          '<button id="button-Apply-Setting" class="btn btn-primary rounded m-2 type=submit" onclick=\'applySettings()\'>Apply Setting</button> <div id="TableArea" style="margin: auto;"></div> ',
+        body: '<table style="width:100%" ><tr><td class="text-center" '+
+        'id="Card-5-Settings-d">Select difficulty</td><td><p id="X-Range-Title">X size: 5</p><input id="X-Range-slider" type="range" min="1" max="10" value="5">'+
+        '<p id="Y-Range-Title">Y size: 4</p><input id="Y-Range-slider" type="range" min="1" max="10" value="4"></td></tr></table>',
+        footer: ''
       },
     ],
     Dropdowns: [
       {
         id: "difficultySetting",
-        insideID: "Card-5-Card-Body",
-        List: ["easy", "medium", "hard", "custom"],
+        insideID: "Card-5-Settings-d",
+        List: ["easy", "medium", "hard"],
         muti: false,
+        functions:'document.getElementById("dropdownMenuLinkdifficultySetting").innerHTML=this.innerHTML;applySettings();'
       },
     ],
   },
