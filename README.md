@@ -1,6 +1,6 @@
 # CPSC2600 Full Stack Web Development Project
 
-This is a full stack web development project for CPSC2600, authored by [Mitchell]() and [Yujie](). The project is an online memory matching game, built using HTML, CSS, JavaScript, and Node.js.
+This is a full stack web development project for CPSC2600, authored by [Mitchell](https://github.com/MitchellPokrandt) and [Yujie](https://github.com/Peng-Yujie). The project is an online memory matching game, built using HTML, CSS, JavaScript, and Node.js.
 
 ## Overview
 
@@ -25,7 +25,7 @@ The game is a simple memory matching game where the player is presented with car
   - Game difficulty levels
 - Art:
   - Animation
-  - Cards front (from API)
+  - Cards front
   - Cards back
 - Rankings:
   - Recorded high scores
@@ -44,10 +44,12 @@ The game is a simple memory matching game where the player is presented with car
 ├── controllers/ # Contains controller files
 │ ├── homeController.js
 │ ├── memberController.js
+│ ├── achievementController.js
 ├── models/ # Contains model files
 │ ├── config/
 │ │ ├── config.js
-│ ├── post.js
+│ ├── user.js
+│ ├── score.js
 │ ├── util.js
 ├── server/
 │ ├── config/
@@ -89,3 +91,7 @@ npm start
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## References
+
+- [Node.js](https://nodejs.org/en/learn/getting-started/introduction-to-nodejs)
+- [MongoDB](https://www.mongodb.com/)
+- [Bootstrap](https://getbootstrap.com/)
