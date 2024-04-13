@@ -129,34 +129,7 @@ memberController.post("/signout", util.logRequest, async (req, res) => {
   }
 });
 
-// Member routes
-// memberController.get("/member", util.logRequest, async (req, res, next) => {
-//   console.info("Inside member.html");
-//   // let collection = client.db().collection("Posts");
-//   let db = await getDB();
-//   let collection = db.collection("Posts");
-//   let post = Post("Security", "AAA is a key concept in security", "Pentester");
-//   util.insertOne(collection, post);
-//   res.sendFile("member.html", { root: config.ROOT });
-// });
-
-// memberController.get("/posts", util.logRequest, async (req, res, next) => {
-//   // let collection = client.db().collection("Posts");
-//   let db = await getDB();
-//   let collection = db.collection("Posts");
-//   let posts = await util.find(collection, {});
-//   //Utils.saveJson(__dirname + '/../data/topics.json', JSON.stringify(topics))
-//   res.status(200).json(posts);
-// });
-
-// memberController.get(
-//   "/postMessage",
-//   util.logRequest,
-//   async (req, res, next) => {
-//     res.sendFile("postMessage.html", { root: config.ROOT });
-//   }
-// );
-
+// User score
 memberController.post("/score", util.logRequest, async (req, res, next) => {
   let db = await getDB();
   let collection = db.collection("scores");
@@ -168,23 +141,101 @@ memberController.post("/score", util.logRequest, async (req, res, next) => {
   res.status(200).json({ success: "Score added successfully" });
 });
 
-// Admin routes
-memberController.get("/admin", util.logRequest, async (req, res, next) => {
-  console.info("Inside admin.html");
-  const email = req.headers["X-User-Email"];
-  // check if the current user is an admin
-  let db = await getDB();
-  let collection = db.collection("users");
-  let user = await util.findOne(collection, { email: email });
-  // if the user is not an admin, send an error message and return
-  if (!user.isAdmin) {
-    res.status(401).json({ error: "Unauthorized access" });
-    return;
+// Member routes
+memberController.get(
+  "/highscores/:userEmail",
+  util.logRequest,
+  async (req, res, next) => {
+    try {
+      let db = await getDB();
+      let collection = db.collection("scores");
+      let user = req.params.userEmail;
+      let scores = await util.find(collection, {});
+      let topScores = scores.sort((a, b) => a.Time - b.Time).slice(0, 10);
+      let userTopScores = scores
+        .filter((score) => score.User === user)
+        .sort((a, b) => a.Time - b.Time)
+        .slice(0, 10);
+      res.status(200).json({
+        success: "High scores retrieved successfully",
+        topScores,
+        userTopScores,
+      });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while retrieving high scores" });
+    }
   }
-  // route to admin page
-  res
-    .status(200)
-    .json({ success: "Welcome to the admin page", state: "admin" });
-});
+);
+
+// Admin routes
+memberController.get(
+  "/admin/:email",
+  util.logRequest,
+  async (req, res, next) => {
+    try {
+      console.info("Inside admin.html");
+      const email = req.params.email;
+      console.log(email);
+      // check if the current user is an admin
+      let db = await getDB();
+      let collection = db.collection("users");
+      let user = await util.findOne(collection, { email: email });
+      console.log(user);
+      // if the user is not an admin, send an error message and return
+      if (!user.isAdmin) {
+        res.status(401).json({ error: "Unauthorized access" });
+        return;
+      }
+      // get all users
+      let users = await util.find(collection, {});
+      // route to admin page
+      res.status(200).json({
+        success: "Welcome to the admin page",
+        users: users,
+      });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while retrieving users" });
+    }
+  }
+);
+// Admin user management
+memberController.post(
+  "/admin/delete",
+  util.logRequest,
+  async (req, res, next) => {
+    try {
+      console.info("\t|Deleting user");
+      const { adminEmail, userEmail } = req.body;
+      let db = await getDB();
+      let collection = db.collection("users");
+      // admin verification
+      let admin = await util.findOne(collection, { email: adminEmail });
+      if (!admin.isAdmin) {
+        res.status(401).json({ error: "Unauthorized access" });
+        return;
+      }
+      // delete the user
+      let userToDelete = await util.findOne(collection, { email: userEmail });
+      if (!userToDelete) {
+        res.status(400).json({ error: "User not found" });
+        return;
+      }
+      await util.deleteOne(collection, { email: userEmail });
+      console.log(`\t|User ${userEmail} deleted successfully`);
+      res.status(200).json({ success: "User deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while deleting the user" });
+    }
+  }
+);
 
 module.exports = memberController;

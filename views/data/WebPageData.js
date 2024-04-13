@@ -81,7 +81,6 @@ var Data = [
     authenticated: 2,
     class: "row mb-3 justify-content-between",
     Cards: [
-            
       {
         id: "Card-6",
         header: "Register",
@@ -93,8 +92,24 @@ var Data = [
         header: "Login",
         class: "col-md-6 p-2",
         body: '<div id="Login-form"><form><input type="email" name="email" placeholder="Email" required /><br /><input type="password" name="password" placeholder="Password" required /><br /> <button id="signin">Sign In</button></form></div>',
-        footer: '',
-      }
+        footer: "",
+      },
+    ],
+    Dropdowns: [],
+  },
+  {
+    name: "Admin",
+    authenticated: 3,
+    class: "row mb-3 justify-content-between",
+    Cards: [
+      {
+        id: "Card-8",
+        header: "Users",
+        class: " p-2",
+        // body: users list table
+        body: '<table id="users-list" class="table table-striped table-secondary"></table>',
+        footer: "",
+      },
     ],
     Dropdowns: [],
   },
