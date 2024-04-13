@@ -181,7 +181,7 @@ class HtmlObjects {
       '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">';
     out += '<script type="text/javascript" src="js/HTML.js"></script>';
     out +=
-      '<link rel="shortcut icon" href="img/question.png" type="image/x-icon">';
+      '<link rel="shortcut icon" href="images/Icon.png" type="image/x-icon">';
     document.getElementById(id).innerHTML = out;
   }
   makeColorSelecter(id, name, classes, min, max) {

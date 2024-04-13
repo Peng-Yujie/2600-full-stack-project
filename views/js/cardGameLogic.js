@@ -9,9 +9,9 @@ let Flipt = [];
 let NumberofMatches = 0;
 let NumberofMatchesNeed = 0;
 let done = false;
+
 // Get the current user from localStorage
 let currentUser = localStorage.getItem("currentUser") || undefined;
-
 //----------------------------------------------------
 // Fetch utility
 const postData = async (url = "", data = {}) => {
@@ -31,11 +31,15 @@ const postData = async (url = "", data = {}) => {
   return response.json();
 };
 
-function makeTable(id) {
+function makeTable(id,XInvar,YInvar) {
+	timeLeft = timeLimit;
 	done = false;
+	objs = [];
+	Flipt = [];
+	cards =[];
 	NumberofMatches = 0;
-	let xSize = Xvar;
-	let ySize = Yvar
+	let xSize = XInvar;
+	let ySize = YInvar;
 	let out = '<table style="margin: 0 auto;" >';
 	let ix = 0;
 	let iy = 0;
@@ -74,6 +78,7 @@ function makerandom(xSize, ySize) {
 		while (i2 < needToMatch) {
 			let x = Math.floor(Math.random() * xSize);
 			let y = Math.floor(Math.random() * ySize);
+			console.log(cards)
 			if (cards[x][y] != 0) {
 				continue;
 			}
@@ -181,11 +186,12 @@ function tick()
 	
 	if (timeLeft > 0&& !done) 
 	{
-		size = (objs.length)
-		while (i < size) {
+		while (i < objs.length) {
 			objs[i].time += dt / AnimashonTime
 			let  size = 100 * (1 - Math.sin(Math.PI * objs[i].time))
+			
 			size  = size <= 100 ? size : 100
+			objs[i].Lable.style.transform = `scale(${size/100},1) translate(0%, -100%)`;
 			objs[i].ob.style.width =  size  + "px";
 			if (objs[i].time > 1) {
 				if (objs[i].ob.alt != "CardBack") {
