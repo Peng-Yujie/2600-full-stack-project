@@ -25,7 +25,7 @@ var Data = [
         class: "p-2 text-center",
         body: "the Game Feald",
         footer:
-          '<button id="button-makeTable" class="btn btn-primary rounded m-2 type=submit" onclick=\'makeTable("Card-2-Card-Body")\'>Start Game</button> <div id="TableArea" style="margin: auto;"></div> ',
+          '<button id="button-makeTable" class="btn btn-primary rounded m-2 type=submit" onclick=\'makeTable("Card-2-Card-Body",Xvar,Yvar)\'>Start Game</button> <div id="TableArea" style="margin: auto;"></div> ',
       },
     ],
     Dropdowns: [],

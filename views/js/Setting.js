@@ -15,13 +15,13 @@ YRS.addEventListener("input", function () {Yslider();},false);
 function Xslider()
 {
 	
-	Xvar = XRS.value 
+	Xvar = parseInt(XRS.value)
 	XRT.innerHTML = `X size: ${Xvar}`
 	dsd.innerHTML = "custom"
 }
 function Yslider()
 {
-	Yvar = YRS.value 
+	Yvar = parseInt(YRS.value)
 	YRT.innerHTML = `Y size: ${Yvar}`
 	dsd.innerHTML = "custom"
 }
