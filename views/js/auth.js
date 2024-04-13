@@ -143,7 +143,7 @@
     let confirm = document.querySelector("#confirm").value;
     console.log(email, password, confirm);
 
-    if (password == confirm) {
+    if (password && password === confirm) {
       const reply = await postData("/signup", { email, password });
       if (reply.error) {
         console.log(reply.error);

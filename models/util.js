@@ -106,6 +106,17 @@
     }
   };
   //-------------------------------------------------------------------------
+  // Fetch utility
+  const getJSONData = async (url = "") => {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //-------------------------------------------------------------------------
   const util = {
     getMongoClient,
     connectDB,
@@ -117,6 +128,7 @@
     insertMany,
     insertOne,
     logRequest,
+    getJSONData,
   };
   const moduleExports = util;
   if (typeof __dirname !== "undefined") {
